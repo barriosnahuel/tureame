@@ -6,14 +6,18 @@
 package org.nbempire.android.tourguide.component.activity;
 
 import android.content.Context;
+import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.Toast;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import org.nbempire.android.tourguide.MyLocationListener;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 import org.nbempire.android.tourguide.R;
 
 /**
@@ -85,8 +89,7 @@ public class MapActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        // Define a listener that responds to location updates
-        getCurrentLocation(new MyLocationListener(this, mMap));
+        getCurrentLocation();
 
         //  TODO : Functionality : show layers.
     }
@@ -94,19 +97,81 @@ public class MapActivity extends FragmentActivity {
     /**
      * Gets the current location from {@link #mMap} enabling MyLocation layer when needed. If there's no location data available then shows an
      * error message to the user.
-     *
-     * @param locationListener
      */
-    private void getCurrentLocation(LocationListener locationListener) {
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+    private void getCurrentLocation() {
+        final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         if (locationManager != null) {
+            LocationListener locationListener = createLocationListener(locationManager);
+
             // Register the listener with the Location Manager to receive location updates
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         } else {
             //  TODO : Functionality : Show an error to the user.
             Log.e(TAG, "The retrieved locationManager is null.");
         }
+    }
+
+    /**
+     * TODO : Javadoc for createLocationListener
+     *
+     * @param locationManager
+     *
+     * @return
+     */
+    private LocationListener createLocationListener(final LocationManager locationManager) {
+        // Define a listener that responds to location updates
+        return new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                if (location == null) {
+                    Log.e(TAG, "location is null.");
+                } else {
+                    Log.i(TAG, "Current location is: (" + location.getLatitude() + ", " + location.getLongitude() + ")");
+
+                    LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+
+                    CameraPosition position =
+                            new CameraPosition.Builder().target(currentLocation)
+                                    .zoom(mMap.getMaxZoomLevel() - 2)
+                                    .bearing(0)
+                                    .tilt((float) 67.5)
+                                    .build();
+
+                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(position),
+                                              new GoogleMap.CancelableCallback() {
+                                                  @Override
+                                                  public void onFinish() {
+                                                      //  TODO : Functionality : remove theese toasts.
+                                                      Toast.makeText(getBaseContext(), "Animation complete", Toast.LENGTH_SHORT).show();
+                                                  }
+
+                                                  @Override
+                                                  public void onCancel() {
+                                                      Toast.makeText(getBaseContext(), "Animation canceled", Toast.LENGTH_SHORT).show();
+                                                  }
+                                              });
+                }
+            }
+
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+                //  TODO : Functionality : do something onStatusChanged for a provider.
+                Log.e(TAG, "status changed for provider: " + s);
+            }
+
+            @Override
+            public void onProviderEnabled(String s) {
+                Log.e(TAG, "Enabled provider: " + s);
+                locationManager.requestLocationUpdates(s, 0, 0, this);
+            }
+
+            @Override
+            public void onProviderDisabled(String s) {
+                //  TODO : Functionality : do something onProviderDisabled
+                Log.e(TAG, "Disabled provider: " + s);
+            }
+        };
     }
 
 }
