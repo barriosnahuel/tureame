@@ -22,9 +22,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
-    <!-- The following permissions are recommended, but can be ignored if your application does not access the user's current location, either
-    programmatically, or by enabling the My Location layer -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!--The following permission is to request location via GPS_PROVIDER and it also includes ACCESS_COARSE_LOCATION to request location via NETWORK_PROVIDER-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!--End permissions for Google Maps Android API V2-->

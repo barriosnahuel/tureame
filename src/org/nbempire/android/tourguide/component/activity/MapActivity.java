@@ -5,16 +5,15 @@
 
 package org.nbempire.android.tourguide.component.activity;
 
-import android.location.Location;
+import android.content.Context;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.widget.Toast;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
+import org.nbempire.android.tourguide.MyLocationListener;
 import org.nbempire.android.tourguide.R;
 
 /**
@@ -86,59 +85,28 @@ public class MapActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        LatLng currentLocation = getCurrentLocation();
+        // Define a listener that responds to location updates
+        getCurrentLocation(new MyLocationListener(this, mMap));
 
-        //  TODO : Functionality : move camera to current location
-        CameraPosition position =
-                new CameraPosition.Builder().target(currentLocation)
-                        .zoom(mMap.getMaxZoomLevel())
-                        .bearing(0)
-                        .tilt((float) 67.5)
-                        .build();
-
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(position),
-                                  new GoogleMap.CancelableCallback() {
-                                      @Override
-                                      public void onFinish() {
-                                          Toast.makeText(getBaseContext(),
-                                                                "Animation complete",
-                                                                Toast.LENGTH_SHORT).show();
-                                      }
-
-                                      @Override
-                                      public void onCancel() {
-                                          Toast.makeText(getBaseContext(),
-                                                                "Animation canceled",
-                                                                Toast.LENGTH_SHORT).show();
-                                      }
-                                  });
-
-        //  TODO : Functionality : enable other layers.
+        //  TODO : Functionality : show layers.
     }
 
     /**
      * Gets the current location from {@link #mMap} enabling MyLocation layer when needed. If there's no location data available then shows an
      * error message to the user.
      *
-     * @return The current location as a {@link LatLng}.
+     * @param locationListener
      */
-    private LatLng getCurrentLocation() {
-        // Sets Sydney as the default location.
-        double latitude = -33.87365;
-        double longitude = 151.20689;
+    private void getCurrentLocation(LocationListener locationListener) {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        //  TODO : Functionality : getCurrentLocation()
-        mMap.setMyLocationEnabled(true);
-        Location currentLocation = mMap.getMyLocation();
-        if (currentLocation != null) {
-            longitude = currentLocation.getLongitude();
-            latitude = currentLocation.getLatitude();
+        if (locationManager != null) {
+            // Register the listener with the Location Manager to receive location updates
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         } else {
-            //  TODO : Functionality : show some error to the user.
-            Log.i(TAG, "There is no location data available. Then, we'll show you at Sydney.");
+            //  TODO : Functionality : Show an error to the user.
+            Log.e(TAG, "The retrieved locationManager is null.");
         }
-
-        return new LatLng(latitude, longitude);
     }
 
 }
