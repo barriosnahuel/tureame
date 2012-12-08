@@ -5,6 +5,9 @@
 
 package org.nbempire.android.tourguide.component.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
@@ -12,7 +15,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -91,6 +93,11 @@ public class MapActivity extends FragmentActivity {
     private void setUpMap() {
         getCurrentLocation();
 
+        //  TODO : Functionality : show las known location.
+        //http://developer.android.com/guide/topics/location/strategies.html
+        //The time it takes for your location listener to receive the first location fix is often too long for users wait.
+        // Until a more accurate location is provided to your location listener, you should utilize a cached location by calling getLastKnownLocation(String):
+
         //  TODO : Functionality : show layers.
     }
 
@@ -105,10 +112,28 @@ public class MapActivity extends FragmentActivity {
             LocationListener locationListener = createLocationListener(locationManager);
 
             // Register the listener with the Location Manager to receive location updates
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            List<String> providers = new ArrayList<String>();
+            addLocationProviderIfEnabled(providers, locationManager, LocationManager.GPS_PROVIDER);
+            addLocationProviderIfEnabled(providers, locationManager, LocationManager.NETWORK_PROVIDER);
+
+            if (providers.isEmpty()) {
+                //  TODO : Functionality : display an warning to the user and try to activate with his confirmation.
+                Log.w(TAG, "There isn't any enabled provider to retrieve current location.");
+            } else {
+                for (String eachProvider : providers) {
+                    Log.i(TAG, "Request location updates for provider: " + eachProvider);
+                    locationManager.requestLocationUpdates(eachProvider, 0, 0, locationListener);
+                }
+            }
         } else {
             //  TODO : Functionality : Show an error to the user.
             Log.e(TAG, "The retrieved locationManager is null.");
+        }
+    }
+
+    private void addLocationProviderIfEnabled(List<String> locationProviders, LocationManager locationManager, String provider) {
+        if (locationManager.isProviderEnabled(provider)) {
+            locationProviders.add(provider);
         }
     }
 
@@ -142,34 +167,35 @@ public class MapActivity extends FragmentActivity {
                                               new GoogleMap.CancelableCallback() {
                                                   @Override
                                                   public void onFinish() {
-                                                      //  TODO : Functionality : remove theese toasts.
-                                                      Toast.makeText(getBaseContext(), "Animation complete", Toast.LENGTH_SHORT).show();
+                                                      //  TODO : Implementation of .onFinish() method.
+
                                                   }
 
                                                   @Override
                                                   public void onCancel() {
-                                                      Toast.makeText(getBaseContext(), "Animation canceled", Toast.LENGTH_SHORT).show();
+                                                      //  TODO : Implementation of .onCancel() method.
+
                                                   }
                                               });
                 }
             }
 
             @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
+            public void onStatusChanged(String provider, int status, Bundle extras) {
                 //  TODO : Functionality : do something onStatusChanged for a provider.
-                Log.e(TAG, "status changed for provider: " + s);
+                Log.i(TAG, "status changed for provider: " + provider);
             }
 
             @Override
-            public void onProviderEnabled(String s) {
-                Log.e(TAG, "Enabled provider: " + s);
-                locationManager.requestLocationUpdates(s, 0, 0, this);
+            public void onProviderEnabled(String provider) {
+                Log.i(TAG, "Enabled provider: " + provider);
+                locationManager.requestLocationUpdates(provider, 0, 0, this);
             }
 
             @Override
-            public void onProviderDisabled(String s) {
+            public void onProviderDisabled(String provider) {
                 //  TODO : Functionality : do something onProviderDisabled
-                Log.e(TAG, "Disabled provider: " + s);
+                Log.w(TAG, "Disabled provider: " + provider);
             }
         };
     }
