@@ -12,6 +12,6 @@ public final class Manifest {
         /**
          * This permissions are for the Google Maps Android API V2
          */
-        public static final String MAPS_RECEIVE = "org.nbempire.android.tourguide.MAPS_RECEIVE";
+        public static final String MAPS_RECEIVE = "org.nbempire.android.tourguide.permission.MAPS_RECEIVE";
     }
 }
