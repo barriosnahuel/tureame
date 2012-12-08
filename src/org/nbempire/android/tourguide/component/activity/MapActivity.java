@@ -3,13 +3,14 @@
  * No se reconocerá ningún tipo de garantía.
  */
 
-package org.nbempire.android.tourguide;
+package org.nbempire.android.tourguide.component.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import org.nbempire.android.tourguide.R;
 
 /**
  * @author Nahuel Barrios.
@@ -17,6 +18,9 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
  */
 public class MapActivity extends Activity {
 
+    /**
+     * Tag for class' log.
+     */
     private static final String TAG = "MapActivity";
 
     @Override
