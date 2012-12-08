@@ -55,7 +55,9 @@
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../google-play-services_lib/libs/google-play-services.jar!/" />
         </CLASSES>
-        <JAVADOC />
+        <JAVADOC>
+          <root url="file://$MODULE_DIR$/../../android-sdk/extras/google/google_play_services/docs/reference" />
+        </JAVADOC>
         <SOURCES />
       </library>
     </orderEntry>
