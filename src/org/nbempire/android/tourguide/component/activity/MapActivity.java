@@ -91,12 +91,23 @@ public class MapActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        getCurrentLocation();
+        final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        //  TODO : Functionality : show las known location.
-        //http://developer.android.com/guide/topics/location/strategies.html
-        //The time it takes for your location listener to receive the first location fix is often too long for users wait.
-        // Until a more accurate location is provided to your location listener, you should utilize a cached location by calling getLastKnownLocation(String):
+        if (locationManager != null) {
+            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (lastKnownLocation != null) {
+                updateLocationOnMap(lastKnownLocation);
+            } else {
+                Log.i(TAG, "There isn't any last known location to display.");
+                //  TODO : Functionality : Display a warn to the user saying that he will have to wait a moment.
+            }
+
+        } else {
+            //  TODO : Functionality : Show an error to the user.
+            Log.e(TAG, "The retrieved locationManager is null.");
+        }
+
+        displayCurrentLocation(locationManager);
 
         //  TODO : Functionality : show layers.
     }
@@ -104,33 +115,36 @@ public class MapActivity extends FragmentActivity {
     /**
      * Gets the current location from {@link #mMap} enabling MyLocation layer when needed. If there's no location data available then shows an
      * error message to the user.
+     *
+     * @param locationManager
+     *         The {@link LocationManager} used to retrieve the information.
      */
-    private void getCurrentLocation() {
-        final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+    private void displayCurrentLocation(LocationManager locationManager) {
+        LocationListener locationListener = createLocationListener(locationManager);
 
-        if (locationManager != null) {
-            LocationListener locationListener = createLocationListener(locationManager);
+        // Register the listener with the Location Manager to receive location updates
+        List<String> providers = new ArrayList<String>();
+        addLocationProviderIfEnabled(providers, locationManager, LocationManager.GPS_PROVIDER);
+        addLocationProviderIfEnabled(providers, locationManager, LocationManager.NETWORK_PROVIDER);
 
-            // Register the listener with the Location Manager to receive location updates
-            List<String> providers = new ArrayList<String>();
-            addLocationProviderIfEnabled(providers, locationManager, LocationManager.GPS_PROVIDER);
-            addLocationProviderIfEnabled(providers, locationManager, LocationManager.NETWORK_PROVIDER);
-
-            if (providers.isEmpty()) {
-                //  TODO : Functionality : display an warning to the user and try to activate with his confirmation.
-                Log.w(TAG, "There isn't any enabled provider to retrieve current location.");
-            } else {
-                for (String eachProvider : providers) {
-                    Log.i(TAG, "Request location updates for provider: " + eachProvider);
-                    locationManager.requestLocationUpdates(eachProvider, 0, 0, locationListener);
-                }
-            }
+        if (providers.isEmpty()) {
+            //  TODO : Functionality : display an warning to the user and try to activate with his confirmation.
+            Log.w(TAG, "There isn't any enabled provider to retrieve current location.");
         } else {
-            //  TODO : Functionality : Show an error to the user.
-            Log.e(TAG, "The retrieved locationManager is null.");
+            for (String eachProvider : providers) {
+                Log.i(TAG, "Request location updates for provider: " + eachProvider);
+                locationManager.requestLocationUpdates(eachProvider, 0, 0, locationListener);
+            }
         }
     }
 
+    /**
+     * TODO : Javadoc for addLocationProviderIfEnabled
+     *
+     * @param locationProviders
+     * @param locationManager
+     * @param provider
+     */
     private void addLocationProviderIfEnabled(List<String> locationProviders, LocationManager locationManager, String provider) {
         if (locationManager.isProviderEnabled(provider)) {
             locationProviders.add(provider);
@@ -156,27 +170,7 @@ public class MapActivity extends FragmentActivity {
 
                     LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
-                    CameraPosition position =
-                            new CameraPosition.Builder().target(currentLocation)
-                                    .zoom(mMap.getMaxZoomLevel() - 2)
-                                    .bearing(0)
-                                    .tilt((float) 67.5)
-                                    .build();
-
-                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(position),
-                                              new GoogleMap.CancelableCallback() {
-                                                  @Override
-                                                  public void onFinish() {
-                                                      //  TODO : Implementation of .onFinish() method.
-
-                                                  }
-
-                                                  @Override
-                                                  public void onCancel() {
-                                                      //  TODO : Implementation of .onCancel() method.
-
-                                                  }
-                                              });
+                    updateLocationOnMap(currentLocation);
                 }
             }
 
@@ -198,6 +192,44 @@ public class MapActivity extends FragmentActivity {
                 Log.w(TAG, "Disabled provider: " + provider);
             }
         };
+    }
+
+    /**
+     * Update the displayed location on the map with the specified one.
+     *
+     * @param location
+     *         The location to show.
+     */
+    private void updateLocationOnMap(LatLng location) {
+        CameraPosition position =
+                new CameraPosition.Builder().target(location)
+                        .zoom(mMap.getMaxZoomLevel() - 2)
+                        .bearing(0)
+                        .tilt((float) 67.5)
+                        .build();
+
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(position),
+                                  new GoogleMap.CancelableCallback() {
+                                      @Override
+                                      public void onFinish() {
+                                          //  TODO : Implementation of .onFinish() method.
+                                      }
+
+                                      @Override
+                                      public void onCancel() {
+                                          //  TODO : Implementation of .onCancel() method.
+                                      }
+                                  });
+    }
+
+    /**
+     * Update the displayed location on the map with the specified one.
+     *
+     * @param location
+     *         The location to show.
+     */
+    private void updateLocationOnMap(Location location) {
+        updateLocationOnMap(new LatLng(location.getLatitude(), location.getLongitude()));
     }
 
 }
