@@ -5,4 +5,6 @@
 
 <resources>
     <string name="msg_gps_is_disabled_do_you_want_to_enable_it">Your GPS seems to be disabled, do you want to enable it?</string>
+    <string name="msg_we_re_finding_you_dont_hide_and_wait_a_moment_please">We\'re finding you, don\'t hide yourself and wait a moment please…
+    </string>
 </resources>

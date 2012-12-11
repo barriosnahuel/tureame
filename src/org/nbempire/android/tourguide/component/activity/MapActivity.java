@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -70,7 +71,7 @@ public class MapActivity extends FragmentActivity {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-        //  TODO : Performance : should I ask for both GPS and network providers?
+        //  TODO : Performance : Ask for both GPS and network providers
 
         if (!gpsEnabled) {
             buildAlertMessageNoGps();
@@ -86,6 +87,8 @@ public class MapActivity extends FragmentActivity {
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        //  TODO : Performance : Call startActivityForResult with requestCode and requestResult to assert that after user
+                        // comes back from the intent there's any provider enabled.
                         startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                     }
                 })
@@ -150,54 +153,47 @@ public class MapActivity extends FragmentActivity {
     private void setUpMap() {
         final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        if (locationManager != null) {
-            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (lastKnownLocation != null) {
-                Log.i(TAG, "Showing last known location on map...");
-                updateLocationOnMap(lastKnownLocation);
-            } else {
-                Log.i(TAG, "There isn't any last known location to display.");
-                //  TODO : Functionality : Display a warn to the user saying that he will have to wait a moment.
-            }
+        subscribeToLocationUpdates(locationManager);
 
-        } else {
-            //  TODO : Functionality : Show an error to the user.
-            Log.e(TAG, "The retrieved locationManager is null.");
-        }
-
-        displayCurrentLocation(locationManager);
+        displayLastKnownLocation(locationManager);
 
         //  TODO : Functionality : show layers.
         //addWikipediaLayer();
     }
 
     /**
-     * TODO : Javadoc for addWikipediaLayer
+     * Display last known location if exists in any of GPS or network providers.
+     *
+     * @param locationManager
+     *         The location manager to use for retrieve location information.
      */
-    private void addWikipediaLayer() {
-        final String moonMapUrlFormat = "http://mw1.google.com/mw-planetary/lunar/lunarmaps_v1/clem_bw/%d/%d/%d.jpg";
+    private void displayLastKnownLocation(LocationManager locationManager) {
+        Location lastKnownLocationByGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location lastKnownLocationByNetwork = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-        TileProvider tileProvider = new UrlTileProvider(256, 256) {
-            @Override
-            public synchronized URL getTileUrl(int x, int y, int zoom) {
+        Location lastKnownLocation = null;
+        if (lastKnownLocationByGps != null && lastKnownLocationByNetwork != null) {
 
-                // The moon tile coordinate system is reversed.  This is not normal.
-                int reversedY = (1 << zoom) - y - 1;
-
-                String formattedUrl = String.format(Locale.US, moonMapUrlFormat, zoom, x, reversedY);
-
-                URL url;
-                try {
-                    url = new URL(formattedUrl);
-                } catch (MalformedURLException malformedUrlException) {
-                    throw new AssertionError(malformedUrlException);
-                }
-
-                return url;
+            if (lastKnownLocationByGps.getTime() > lastKnownLocationByNetwork.getTime()) {
+                lastKnownLocation = lastKnownLocationByGps;
+            } else {
+                lastKnownLocation = lastKnownLocationByNetwork;
             }
-        };
 
-        mMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider));
+        } else if (lastKnownLocationByGps != null) {
+            lastKnownLocation = lastKnownLocationByGps;
+
+        } else {
+            lastKnownLocation = lastKnownLocationByNetwork;
+        }
+
+        Toast.makeText(this, R.string.msg_we_re_finding_you_dont_hide_and_wait_a_moment_please, Toast.LENGTH_LONG).show();
+        if (lastKnownLocation != null) {
+            Log.i(TAG, "Showing last known location on map...");
+            updateLocationOnMap(lastKnownLocation);
+        } else {
+            Log.i(TAG, "There isn't any last known location to display.");
+        }
     }
 
     /**
@@ -207,7 +203,7 @@ public class MapActivity extends FragmentActivity {
      * @param locationManager
      *         The {@link LocationManager} used to retrieve the information.
      */
-    private void displayCurrentLocation(LocationManager locationManager) {
+    private void subscribeToLocationUpdates(LocationManager locationManager) {
         LocationListener locationListener = createLocationListener(locationManager);
 
         // Register the listener with the Location Manager to receive location updates
@@ -327,6 +323,35 @@ public class MapActivity extends FragmentActivity {
      */
     private void updateLocationOnMap(Location location) {
         updateLocationOnMap(new LatLng(location.getLatitude(), location.getLongitude()));
+    }
+
+    /**
+     * TODO : Javadoc for addWikipediaLayer
+     */
+    private void addWikipediaLayer() {
+        final String moonMapUrlFormat = "http://mw1.google.com/mw-planetary/lunar/lunarmaps_v1/clem_bw/%d/%d/%d.jpg";
+
+        TileProvider tileProvider = new UrlTileProvider(256, 256) {
+            @Override
+            public synchronized URL getTileUrl(int x, int y, int zoom) {
+
+                // The moon tile coordinate system is reversed.  This is not normal.
+                int reversedY = (1 << zoom) - y - 1;
+
+                String formattedUrl = String.format(Locale.US, moonMapUrlFormat, zoom, x, reversedY);
+
+                URL url;
+                try {
+                    url = new URL(formattedUrl);
+                } catch (MalformedURLException malformedUrlException) {
+                    throw new AssertionError(malformedUrlException);
+                }
+
+                return url;
+            }
+        };
+
+        mMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider));
     }
 
 }
