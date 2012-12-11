@@ -52,6 +52,11 @@ public class MapActivity extends FragmentActivity {
     private static final long MIN_DISTANCE_FOR_LOCATION_UPDATES = 0;
 
     /**
+     * TODO : Javadoc for REQUEST_CODE_ENABLE_LOCATION_PROVIDERS
+     */
+    private static final int REQUEST_CODE_ENABLE_LOCATION_PROVIDERS = 1;
+
+    /**
      * Note that this may be null if the Google Play services APK is not available.
      */
     private GoogleMap mMap;
@@ -61,43 +66,51 @@ public class MapActivity extends FragmentActivity {
      */
     private static final String TAG = "MapActivity";
 
-    @Override
-    protected void onStart() {
-        // Always call the superclass method first
-        super.onStart();
-
-        // The activity is either being restarted or started for the first time so this is where we should make sure that GPS is enabled
-
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-        //  TODO : Performance : Ask for both GPS and network providers
-
-        if (!gpsEnabled) {
-            buildAlertMessageNoGps();
-        }
-    }
+    /**
+     * {@link AlertDialog} used to let user decide between enable or not his location providers like GPS or wireless network.
+     */
+    private AlertDialog noEnabledProvidersDialog;
 
     /**
-     * Creates an {AlertDialog} to take user to his location settings to let him enable the GPS service.
+     * Creates an {AlertDialog} to take user to his location settings to let him enable any location provider.
+     *
+     * @param alertMessage
+     *         The resource ID for the message to show in the {@link AlertDialog}.
+     * @param positiveButtonLabel
+     *         The resource ID for the positive button label.
+     * @param negativeButtonLabel
+     *         The resource ID for the negative button label.
      */
-    private void buildAlertMessageNoGps() {
-        new AlertDialog.Builder(this).setMessage(R.string.msg_gps_is_disabled_do_you_want_to_enable_it)
-                .setCancelable(false)
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //  TODO : Performance : Call startActivityForResult with requestCode and requestResult to assert that after user
-                        // comes back from the intent there's any provider enabled.
-                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    }
-                })
-                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                }).show();
+    private void buildAlertMessageNoGps(int alertMessage, int positiveButtonLabel, int negativeButtonLabel) {
+        noEnabledProvidersDialog = new AlertDialog.Builder(this).setMessage(alertMessage)
+                                           .setCancelable(false)
+
+                                           .setPositiveButton(positiveButtonLabel, new DialogInterface.OnClickListener() {
+                                               @Override
+                                               public void onClick(DialogInterface dialog, int which) {
+                                                   //  TODO : Performance : Call startActivityForResult with requestCode and requestResult to assert that after user
+                                                   // comes back from the intent there's any provider enabled.
+                                                   startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), REQUEST_CODE_ENABLE_LOCATION_PROVIDERS);
+                                               }
+                                           })
+
+                                           .setNegativeButton(negativeButtonLabel, new DialogInterface.OnClickListener() {
+                                               @Override
+                                               public void onClick(DialogInterface dialog, int which) {
+                                                   dialog.cancel();
+                                                   buildAlertMessageNoGps(R.string.msg_location_providers_are_required, R.string.enable,
+                                                                                 R.string.close_app);
+                                               }
+                                           }).show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        boolean subscribed = subscribeToLocationUpdates(locationManager);
+        if (subscribed) {
+            noEnabledProvidersDialog.cancel();
+        }
     }
 
     @Override
@@ -151,7 +164,7 @@ public class MapActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         subscribeToLocationUpdates(locationManager);
 
@@ -203,7 +216,7 @@ public class MapActivity extends FragmentActivity {
      * @param locationManager
      *         The {@link LocationManager} used to retrieve the information.
      */
-    private void subscribeToLocationUpdates(LocationManager locationManager) {
+    private boolean subscribeToLocationUpdates(LocationManager locationManager) {
         LocationListener locationListener = createLocationListener(locationManager);
 
         // Register the listener with the Location Manager to receive location updates
@@ -211,15 +224,19 @@ public class MapActivity extends FragmentActivity {
         addLocationProviderIfEnabled(providers, locationManager, LocationManager.GPS_PROVIDER);
         addLocationProviderIfEnabled(providers, locationManager, LocationManager.NETWORK_PROVIDER);
 
+        boolean subscribed = true;
         if (providers.isEmpty()) {
-            //  TODO : Functionality : display an warning to the user and try to activate with his confirmation.
             Log.w(TAG, "There isn't any enabled provider to retrieve current location.");
+            subscribed = false;
+            buildAlertMessageNoGps(R.string.msg_gps_is_disabled_do_you_want_to_enable_it, R.string.yes, R.string.no);
         } else {
             for (String eachProvider : providers) {
                 Log.i(TAG, "Request location updates for provider: " + eachProvider);
                 locationManager.requestLocationUpdates(eachProvider, MIN_TIME_FOR_LOCATION_UPDATES, MIN_DISTANCE_FOR_LOCATION_UPDATES, locationListener);
             }
         }
+
+        return subscribed;
     }
 
     /**
