@@ -5,8 +5,11 @@
 
 package org.nbempire.android.tourguide.component.activity;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.location.Location;
@@ -20,6 +23,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.android.gms.maps.model.TileProvider;
+import com.google.android.gms.maps.model.UrlTileProvider;
 import org.nbempire.android.tourguide.R;
 
 /**
@@ -96,6 +102,7 @@ public class MapActivity extends FragmentActivity {
         if (locationManager != null) {
             Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (lastKnownLocation != null) {
+                Log.i(TAG, "Showing last known location on map...");
                 updateLocationOnMap(lastKnownLocation);
             } else {
                 Log.i(TAG, "There isn't any last known location to display.");
@@ -110,6 +117,39 @@ public class MapActivity extends FragmentActivity {
         displayCurrentLocation(locationManager);
 
         //  TODO : Functionality : show layers.
+        //addWikipediaLayer();
+    }
+
+    /**
+     * This returns moon tiles.
+     */
+    private static final String MOON_MAP_URL_FORMAT = "http://mw1.google.com/mw-planetary/lunar/lunarmaps_v1/clem_bw/%d/%d/%d.jpg";
+
+    /**
+     * TODO : Javadoc for addWikipediaLayer
+     */
+    private void addWikipediaLayer() {
+
+        TileProvider tileProvider = new UrlTileProvider(256, 256) {
+            @Override
+            public synchronized URL getTileUrl(int x, int y, int zoom) {
+
+                // The moon tile coordinate system is reversed.  This is not normal.
+                int reversedY = (1 << zoom) - y - 1;
+
+                String s = String.format(Locale.US, MOON_MAP_URL_FORMAT, zoom, x, reversedY);
+
+                URL url = null;
+                try {
+                    url = new URL(s);
+                } catch (MalformedURLException e) {
+                    throw new AssertionError(e);
+                }
+                return url;
+            }
+        };
+
+        mMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider));
     }
 
     /**
@@ -190,6 +230,9 @@ public class MapActivity extends FragmentActivity {
             public void onProviderDisabled(String provider) {
                 //  TODO : Functionality : do something onProviderDisabled
                 Log.w(TAG, "Disabled provider: " + provider);
+
+                //  TODO : Functionality : Check if both providers are disabled, then warn to the user that te application will not work and
+                // let him choose which provider set as enabled just selecting one.
             }
         };
     }
