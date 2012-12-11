@@ -37,6 +37,16 @@ import org.nbempire.android.tourguide.R;
 public class MapActivity extends FragmentActivity {
 
     /**
+     * Time (in milliseconds) to wait between location updates.
+     */
+    private static final long MIN_TIME_FOR_LOCATION_UPDATES = 15000;
+
+    /**
+     * Minimum distance (in meters) to request location updates.
+     */
+    private static final long MIN_DISTANCE_FOR_LOCATION_UPDATES = 0;
+
+    /**
      * Note that this may be null if the Google Play services APK is not available.
      */
     private GoogleMap mMap;
@@ -137,14 +147,15 @@ public class MapActivity extends FragmentActivity {
                 // The moon tile coordinate system is reversed.  This is not normal.
                 int reversedY = (1 << zoom) - y - 1;
 
-                String s = String.format(Locale.US, MOON_MAP_URL_FORMAT, zoom, x, reversedY);
+                String formattedUrl = String.format(Locale.US, MOON_MAP_URL_FORMAT, zoom, x, reversedY);
 
-                URL url = null;
+                URL url;
                 try {
-                    url = new URL(s);
-                } catch (MalformedURLException e) {
-                    throw new AssertionError(e);
+                    url = new URL(formattedUrl);
+                } catch (MalformedURLException malformedUrlException) {
+                    throw new AssertionError(malformedUrlException);
                 }
+
                 return url;
             }
         };
@@ -173,17 +184,21 @@ public class MapActivity extends FragmentActivity {
         } else {
             for (String eachProvider : providers) {
                 Log.i(TAG, "Request location updates for provider: " + eachProvider);
-                locationManager.requestLocationUpdates(eachProvider, 0, 0, locationListener);
+                locationManager.requestLocationUpdates(eachProvider, MIN_TIME_FOR_LOCATION_UPDATES, MIN_DISTANCE_FOR_LOCATION_UPDATES, locationListener);
             }
         }
     }
 
     /**
-     * TODO : Javadoc for addLocationProviderIfEnabled
+     * Add the specified {@code provider} into {@code locationProviders} when the {@code locationManager} says that the {@code provider} is
+     * enabled.
      *
      * @param locationProviders
+     *         List of enabled providers.
      * @param locationManager
+     *         The {@link LocationManager} to retrieve information about enabled providers.
      * @param provider
+     *         The provider to add.
      */
     private void addLocationProviderIfEnabled(List<String> locationProviders, LocationManager locationManager, String provider) {
         if (locationManager.isProviderEnabled(provider)) {
@@ -223,7 +238,7 @@ public class MapActivity extends FragmentActivity {
             @Override
             public void onProviderEnabled(String provider) {
                 Log.i(TAG, "Enabled provider: " + provider);
-                locationManager.requestLocationUpdates(provider, 0, 0, this);
+                locationManager.requestLocationUpdates(provider, MIN_TIME_FOR_LOCATION_UPDATES, MIN_DISTANCE_FOR_LOCATION_UPDATES, this);
             }
 
             @Override
