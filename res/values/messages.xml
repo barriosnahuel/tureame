@@ -4,9 +4,5 @@
   -->
 
 <resources>
-
-    <string name="app_name">I\'m a tourist</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-
+    <string name="msg_gps_is_disabled_do_you_want_to_enable_it">Your GPS seems to be disabled, do you want to enable it?</string>
 </resources>

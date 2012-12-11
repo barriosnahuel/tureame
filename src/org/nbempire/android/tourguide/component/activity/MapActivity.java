@@ -11,11 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -55,6 +59,43 @@ public class MapActivity extends FragmentActivity {
      * Tag for class' log.
      */
     private static final String TAG = "MapActivity";
+
+    @Override
+    protected void onStart() {
+        // Always call the superclass method first
+        super.onStart();
+
+        // The activity is either being restarted or started for the first time so this is where we should make sure that GPS is enabled
+
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        //  TODO : Performance : should I ask for both GPS and network providers?
+
+        if (!gpsEnabled) {
+            buildAlertMessageNoGps();
+        }
+    }
+
+    /**
+     * Creates an {AlertDialog} to take user to his location settings to let him enable the GPS service.
+     */
+    private void buildAlertMessageNoGps() {
+        new AlertDialog.Builder(this).setMessage(R.string.msg_gps_is_disabled_do_you_want_to_enable_it)
+                .setCancelable(false)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,14 +172,10 @@ public class MapActivity extends FragmentActivity {
     }
 
     /**
-     * This returns moon tiles.
-     */
-    private static final String MOON_MAP_URL_FORMAT = "http://mw1.google.com/mw-planetary/lunar/lunarmaps_v1/clem_bw/%d/%d/%d.jpg";
-
-    /**
      * TODO : Javadoc for addWikipediaLayer
      */
     private void addWikipediaLayer() {
+        final String moonMapUrlFormat = "http://mw1.google.com/mw-planetary/lunar/lunarmaps_v1/clem_bw/%d/%d/%d.jpg";
 
         TileProvider tileProvider = new UrlTileProvider(256, 256) {
             @Override
@@ -147,7 +184,7 @@ public class MapActivity extends FragmentActivity {
                 // The moon tile coordinate system is reversed.  This is not normal.
                 int reversedY = (1 << zoom) - y - 1;
 
-                String formattedUrl = String.format(Locale.US, MOON_MAP_URL_FORMAT, zoom, x, reversedY);
+                String formattedUrl = String.format(Locale.US, moonMapUrlFormat, zoom, x, reversedY);
 
                 URL url;
                 try {
@@ -207,11 +244,13 @@ public class MapActivity extends FragmentActivity {
     }
 
     /**
-     * TODO : Javadoc for createLocationListener
+     * Creates a {@link LocationListener} which will be the one that request for location updates and then handle maps updates based on that
+     * location.
      *
      * @param locationManager
+     *         The location manager to use.
      *
-     * @return
+     * @return A listener ready to use.
      */
     private LocationListener createLocationListener(final LocationManager locationManager) {
         // Define a listener that responds to location updates
