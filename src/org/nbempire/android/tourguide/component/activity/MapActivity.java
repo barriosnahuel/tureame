@@ -52,7 +52,7 @@ public class MapActivity extends FragmentActivity {
     private static final long MIN_DISTANCE_FOR_LOCATION_UPDATES = 0;
 
     /**
-     * TODO : Javadoc for REQUEST_CODE_ENABLE_LOCATION_PROVIDERS
+     * Request code used to handle startActivityForResult to let user enable location providers from Settings.Secure intent.
      */
     private static final int REQUEST_CODE_ENABLE_LOCATION_PROVIDERS = 1;
 
@@ -242,11 +242,12 @@ public class MapActivity extends FragmentActivity {
     }
 
     /**
-     * TODO : Javadoc for noLocationProvidersEnabled
+     * Check for enabled location providers and add those ones to {@code providers} list.
      *
      * @param locationManager
      *         The {@link LocationManager} used to retrieve location providers information.
      * @param providers
+     *         A list of location providers to update.
      *
      * @return {@code true} when there isn't any location provider enabled. {@code false} when at least one location provider is enabled.
      */
@@ -315,8 +316,8 @@ public class MapActivity extends FragmentActivity {
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-                //  TODO : Functionality : do something onStatusChanged for a provider.
                 Log.i(TAG, "status changed for provider: " + provider);
+                //  TODO : Functionality : do something onStatusChanged for a provider.
             }
 
             @Override
@@ -327,15 +328,12 @@ public class MapActivity extends FragmentActivity {
 
             @Override
             public void onProviderDisabled(String provider) {
-                //  TODO : Functionality : do something onProviderDisabled
                 Log.w(TAG, "Disabled provider: " + provider);
 
                 if (noLocationProvidersEnabled(locationManager)) {
                     Log.w(TAG, "There isn't any enabled provider to retrieve current location.");
                     buildAlertMessageNoGps(R.string.msg_gps_is_disabled_do_you_want_to_enable_it, R.string.yes, R.string.no);
                 }
-                //  TODO : Functionality : Check if both providers are disabled, then warn to the user that te application will not work and
-                // let him choose which provider set as enabled just selecting one.
             }
         };
     }
@@ -379,6 +377,17 @@ public class MapActivity extends FragmentActivity {
     }
 
     /**
+     * Finish this activity. That means that this method must be used to close the application.
+     *
+     * @param logMessage
+     *         A message to log why we're closing the application.
+     */
+    private void closeApp(String logMessage) {
+        Log.i(TAG, logMessage);
+        finish();
+    }
+
+    /**
      * TODO : Javadoc for addWikipediaLayer
      */
     private void addWikipediaLayer() {
@@ -405,18 +414,6 @@ public class MapActivity extends FragmentActivity {
         };
 
         mMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider));
-    }
-
-
-    /**
-     * Finish this activity. That means that this method must be used to close the application.
-     *
-     * @param logMessage
-     *         A message to log why we're closing the application.
-     */
-    private void closeApp(String logMessage) {
-        Log.i(TAG, logMessage);
-        finish();
     }
 
 }
