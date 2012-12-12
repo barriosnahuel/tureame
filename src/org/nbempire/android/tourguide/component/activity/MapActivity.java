@@ -81,10 +81,10 @@ public class MapActivity extends FragmentActivity {
      * @param negativeButtonLabel
      *         The resource ID for the negative button label.
      */
-    private void buildAlertMessageNoGps(int alertMessage, int positiveButtonLabel, int negativeButtonLabel) {
-        noEnabledProvidersDialog = new AlertDialog.Builder(this).setMessage(alertMessage)
+    private void buildAlertMessageNoGps(int alertMessage, int positiveButtonLabel, final int negativeButtonLabel) {
+        noEnabledProvidersDialog = new AlertDialog.Builder(this)
+                                           .setMessage(alertMessage)
                                            .setCancelable(false)
-
                                            .setPositiveButton(positiveButtonLabel, new DialogInterface.OnClickListener() {
                                                @Override
                                                public void onClick(DialogInterface dialog, int which) {
@@ -93,13 +93,18 @@ public class MapActivity extends FragmentActivity {
                                                    startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), REQUEST_CODE_ENABLE_LOCATION_PROVIDERS);
                                                }
                                            })
-
                                            .setNegativeButton(negativeButtonLabel, new DialogInterface.OnClickListener() {
                                                @Override
                                                public void onClick(DialogInterface dialog, int which) {
+
                                                    dialog.cancel();
-                                                   buildAlertMessageNoGps(R.string.msg_location_providers_are_required, R.string.enable,
-                                                                                 R.string.close_app);
+                                                   if (negativeButtonLabel != R.string.close_app) {
+                                                       buildAlertMessageNoGps(R.string.msg_location_providers_are_required, R.string.enable,
+                                                                                     R.string.close_app);
+                                                   } else {
+                                                       closeApp("The application will be closed because it's unable to run without any " +
+                                                                        "location provider enabled.");
+                                                   }
                                                }
                                            }).show();
     }
@@ -152,8 +157,7 @@ public class MapActivity extends FragmentActivity {
             if (mMap != null) {
                 setUpMap();
             } else {
-                //  TODO : Functionality : Close app when the user doesn't install/upgrade Google Play Services and display an error message.
-                Log.i(TAG, "The application will be closed because of the device is unable to run without the Google Play Services API.");
+                closeApp("The application will be closed because of the device is unable to run without the Google Play Services API.");
             }
         }
     }
@@ -369,6 +373,17 @@ public class MapActivity extends FragmentActivity {
         };
 
         mMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider));
+    }
+
+
+    /**
+     * TODO : Javadoc for closeApp
+     *
+     * @param logMessage
+     */
+    private void closeApp(String logMessage) {
+        Log.i(TAG, logMessage);
+        //  TODO : Functionality : Close app.
     }
 
 }
