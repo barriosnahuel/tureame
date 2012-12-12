@@ -377,13 +377,14 @@ public class MapActivity extends FragmentActivity {
 
 
     /**
-     * TODO : Javadoc for closeApp
+     * Finish this activity. That means that this method must be used to close the application.
      *
      * @param logMessage
+     *         A message to log why we're closing the application.
      */
     private void closeApp(String logMessage) {
         Log.i(TAG, logMessage);
-        //  TODO : Functionality : Close app.
+        finish();
     }
 
 }
