@@ -88,8 +88,6 @@ public class MapActivity extends FragmentActivity {
                                            .setPositiveButton(positiveButtonLabel, new DialogInterface.OnClickListener() {
                                                @Override
                                                public void onClick(DialogInterface dialog, int which) {
-                                                   //  TODO : Performance : Call startActivityForResult with requestCode and requestResult to assert that after user
-                                                   // comes back from the intent there's any provider enabled.
                                                    startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), REQUEST_CODE_ENABLE_LOCATION_PROVIDERS);
                                                }
                                            })
@@ -223,24 +221,54 @@ public class MapActivity extends FragmentActivity {
     private boolean subscribeToLocationUpdates(LocationManager locationManager) {
         LocationListener locationListener = createLocationListener(locationManager);
 
-        // Register the listener with the Location Manager to receive location updates
         List<String> providers = new ArrayList<String>();
-        addLocationProviderIfEnabled(providers, locationManager, LocationManager.GPS_PROVIDER);
-        addLocationProviderIfEnabled(providers, locationManager, LocationManager.NETWORK_PROVIDER);
 
         boolean subscribed = true;
-        if (providers.isEmpty()) {
+
+        if (noLocationProvidersEnabled(locationManager, providers)) {
             Log.w(TAG, "There isn't any enabled provider to retrieve current location.");
             subscribed = false;
             buildAlertMessageNoGps(R.string.msg_gps_is_disabled_do_you_want_to_enable_it, R.string.yes, R.string.no);
         } else {
             for (String eachProvider : providers) {
                 Log.i(TAG, "Request location updates for provider: " + eachProvider);
+
+                // Register the listener with the Location Manager to receive location updates
                 locationManager.requestLocationUpdates(eachProvider, MIN_TIME_FOR_LOCATION_UPDATES, MIN_DISTANCE_FOR_LOCATION_UPDATES, locationListener);
             }
         }
 
         return subscribed;
+    }
+
+    /**
+     * TODO : Javadoc for noLocationProvidersEnabled
+     *
+     * @param locationManager
+     *         The {@link LocationManager} used to retrieve location providers information.
+     * @param providers
+     *
+     * @return {@code true} when there isn't any location provider enabled. {@code false} when at least one location provider is enabled.
+     */
+    private boolean noLocationProvidersEnabled(LocationManager locationManager, List<String> providers) {
+        // Register the listener with the Location Manager to receive location updates
+        addLocationProviderIfEnabled(providers, locationManager, LocationManager.GPS_PROVIDER);
+        addLocationProviderIfEnabled(providers, locationManager, LocationManager.NETWORK_PROVIDER);
+
+        return providers.isEmpty();
+    }
+
+    /**
+     * It does the same as {@link #noLocationProvidersEnabled(android.location.LocationManager, java.util.List)} but without modifying the {@code
+     * providers} list.
+     *
+     * @param locationManager
+     *         The {@link LocationManager} used to retrieve location providers information.
+     *
+     * @return {@code true} when there isn't any location provider enabled. {@code false} when at least one location provider is enabled.
+     */
+    private boolean noLocationProvidersEnabled(LocationManager locationManager) {
+        return noLocationProvidersEnabled(locationManager, new ArrayList<String>());
     }
 
     /**
@@ -302,6 +330,10 @@ public class MapActivity extends FragmentActivity {
                 //  TODO : Functionality : do something onProviderDisabled
                 Log.w(TAG, "Disabled provider: " + provider);
 
+                if (noLocationProvidersEnabled(locationManager)) {
+                    Log.w(TAG, "There isn't any enabled provider to retrieve current location.");
+                    buildAlertMessageNoGps(R.string.msg_gps_is_disabled_do_you_want_to_enable_it, R.string.yes, R.string.no);
+                }
                 //  TODO : Functionality : Check if both providers are disabled, then warn to the user that te application will not work and
                 // let him choose which provider set as enabled just selecting one.
             }
