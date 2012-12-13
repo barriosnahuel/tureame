@@ -25,6 +25,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import org.nbempire.android.tourguide.R;
 import org.nbempire.android.tourguide.dao.impl.PlaceDaoImplSpring;
 import org.nbempire.android.tourguide.domain.Place;
@@ -355,6 +356,10 @@ public class MapActivity extends FragmentActivity {
 
         //  TODO : Functionality : Do something when no places are found.
         for (Place eachPlace : places) {
+            MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(eachPlace.getLatitude(),
+                                                                                         eachPlace.getLongitude())).title(eachPlace.getTitle());
+            mMap.addMarker(markerOptions);
+
             Log.d(TAG, eachPlace.toString());
         }
     }

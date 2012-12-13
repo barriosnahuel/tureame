@@ -58,4 +58,31 @@ public class Place {
         sb.append('}');
         return sb.toString();
     }
+
+    /**
+     * Getter for {@link #latitude} type attribute.
+     *
+     * @return Latitude coordinate.
+     */
+    public double getLatitude() {
+        return latitude;
+    }
+
+    /**
+     * Getter for {@link #longitude} type attribute.
+     *
+     * @return Longitude coordinate.
+     */
+    public double getLongitude() {
+        return longitude;
+    }
+
+    /**
+     * Getter for {@link #title} type attribute.
+     *
+     * @return The title of the place. It's the way that people recognise it.
+     */
+    public String getTitle() {
+        return title;
+    }
 }
