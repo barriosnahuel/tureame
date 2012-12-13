@@ -314,6 +314,7 @@ public class MapActivity extends FragmentActivity {
 
                     LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
+                    //  TODO : Functionality : Don't update places if they already exist.
                     findPlacesNearBy(currentLocation);
 
                     updateLocationOnMap(currentLocation);
@@ -358,6 +359,7 @@ public class MapActivity extends FragmentActivity {
         for (Place eachPlace : places) {
             MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(eachPlace.getLatitude(),
                                                                                          eachPlace.getLongitude())).title(eachPlace.getTitle());
+            //  TODO : Functionality : Check about duplicating the marker onLocationChanged
             mMap.addMarker(markerOptions);
 
             Log.d(TAG, eachPlace.toString());
