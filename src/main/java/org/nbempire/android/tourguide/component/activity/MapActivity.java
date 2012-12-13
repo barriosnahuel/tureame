@@ -5,11 +5,8 @@
 
 package org.nbempire.android.tourguide.component.activity;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -28,10 +25,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.TileOverlayOptions;
-import com.google.android.gms.maps.model.TileProvider;
-import com.google.android.gms.maps.model.UrlTileProvider;
 import org.nbempire.android.tourguide.R;
+import org.nbempire.android.tourguide.dao.impl.PlaceDaoImplSpring;
+import org.nbempire.android.tourguide.domain.Place;
+import org.nbempire.android.tourguide.service.PlaceService;
+import org.nbempire.android.tourguide.service.impl.PlaceServiceImpl;
 
 /**
  * Land-Activity of this application. It contains the main app screen where users can see the map with all its layers.
@@ -72,49 +70,9 @@ public class MapActivity extends FragmentActivity {
     private AlertDialog noEnabledProvidersDialog;
 
     /**
-     * Creates an {AlertDialog} to take user to his location settings to let him enable any location provider.
-     *
-     * @param alertMessage
-     *         The resource ID for the message to show in the {@link AlertDialog}.
-     * @param positiveButtonLabel
-     *         The resource ID for the positive button label.
-     * @param negativeButtonLabel
-     *         The resource ID for the negative button label.
+     * Service for the {@link Place} entity.
      */
-    private void buildAlertMessageNoGps(int alertMessage, int positiveButtonLabel, final int negativeButtonLabel) {
-        noEnabledProvidersDialog = new AlertDialog.Builder(this)
-                                           .setMessage(alertMessage)
-                                           .setCancelable(false)
-                                           .setPositiveButton(positiveButtonLabel, new DialogInterface.OnClickListener() {
-                                               @Override
-                                               public void onClick(DialogInterface dialog, int which) {
-                                                   startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), REQUEST_CODE_ENABLE_LOCATION_PROVIDERS);
-                                               }
-                                           })
-                                           .setNegativeButton(negativeButtonLabel, new DialogInterface.OnClickListener() {
-                                               @Override
-                                               public void onClick(DialogInterface dialog, int which) {
-
-                                                   dialog.cancel();
-                                                   if (negativeButtonLabel != R.string.close_app) {
-                                                       buildAlertMessageNoGps(R.string.msg_location_providers_are_required, R.string.enable,
-                                                                                     R.string.close_app);
-                                                   } else {
-                                                       closeApp("The application will be closed because it's unable to run without any " +
-                                                                        "location provider enabled.");
-                                                   }
-                                               }
-                                           }).show();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        boolean subscribed = subscribeToLocationUpdates(locationManager);
-        if (subscribed) {
-            noEnabledProvidersDialog.cancel();
-        }
-    }
+    private PlaceService placeService = new PlaceServiceImpl(new PlaceDaoImplSpring());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,8 +130,37 @@ public class MapActivity extends FragmentActivity {
 
         displayLastKnownLocation(locationManager);
 
-        //  TODO : Functionality : show layers.
-        //addWikipediaLayer();
+        //  TODO : Functionality : show Wikipedia markers and other useful information.
+    }
+
+    /**
+     * Gets the current location from {@link #mMap} enabling MyLocation layer when needed. If there's no location data available then shows an
+     * error message to the user.
+     *
+     * @param locationManager
+     *         The {@link LocationManager} used to retrieve the information.
+     */
+    private boolean subscribeToLocationUpdates(LocationManager locationManager) {
+        LocationListener locationListener = createLocationListener(locationManager);
+
+        List<String> providers = new ArrayList<String>();
+
+        boolean subscribed = true;
+
+        if (noLocationProvidersEnabled(locationManager, providers)) {
+            Log.w(TAG, "There isn't any enabled provider to retrieve current location.");
+            subscribed = false;
+            buildAlertMessageNoGps(R.string.msg_gps_is_disabled_do_you_want_to_enable_it, R.string.yes, R.string.no);
+        } else {
+            for (String eachProvider : providers) {
+                Log.i(TAG, "Request location updates for provider: " + eachProvider);
+
+                // Register the listener with the Location Manager to receive location updates
+                locationManager.requestLocationUpdates(eachProvider, MIN_TIME_FOR_LOCATION_UPDATES, MIN_DISTANCE_FOR_LOCATION_UPDATES, locationListener);
+            }
+        }
+
+        return subscribed;
     }
 
     /**
@@ -209,36 +196,6 @@ public class MapActivity extends FragmentActivity {
         } else {
             Log.i(TAG, "There isn't any last known location to display.");
         }
-    }
-
-    /**
-     * Gets the current location from {@link #mMap} enabling MyLocation layer when needed. If there's no location data available then shows an
-     * error message to the user.
-     *
-     * @param locationManager
-     *         The {@link LocationManager} used to retrieve the information.
-     */
-    private boolean subscribeToLocationUpdates(LocationManager locationManager) {
-        LocationListener locationListener = createLocationListener(locationManager);
-
-        List<String> providers = new ArrayList<String>();
-
-        boolean subscribed = true;
-
-        if (noLocationProvidersEnabled(locationManager, providers)) {
-            Log.w(TAG, "There isn't any enabled provider to retrieve current location.");
-            subscribed = false;
-            buildAlertMessageNoGps(R.string.msg_gps_is_disabled_do_you_want_to_enable_it, R.string.yes, R.string.no);
-        } else {
-            for (String eachProvider : providers) {
-                Log.i(TAG, "Request location updates for provider: " + eachProvider);
-
-                // Register the listener with the Location Manager to receive location updates
-                locationManager.requestLocationUpdates(eachProvider, MIN_TIME_FOR_LOCATION_UPDATES, MIN_DISTANCE_FOR_LOCATION_UPDATES, locationListener);
-            }
-        }
-
-        return subscribed;
     }
 
     /**
@@ -289,6 +246,52 @@ public class MapActivity extends FragmentActivity {
         }
     }
 
+
+    /**
+     * Creates an {AlertDialog} to take user to his location settings to let him enable any location provider.
+     *
+     * @param alertMessage
+     *         The resource ID for the message to show in the {@link AlertDialog}.
+     * @param positiveButtonLabel
+     *         The resource ID for the positive button label.
+     * @param negativeButtonLabel
+     *         The resource ID for the negative button label.
+     */
+    private void buildAlertMessageNoGps(int alertMessage, int positiveButtonLabel, final int negativeButtonLabel) {
+        noEnabledProvidersDialog = new AlertDialog.Builder(this)
+                                           .setMessage(alertMessage)
+                                           .setCancelable(false)
+                                           .setPositiveButton(positiveButtonLabel, new DialogInterface.OnClickListener() {
+                                               @Override
+                                               public void onClick(DialogInterface dialog, int which) {
+                                                   startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), REQUEST_CODE_ENABLE_LOCATION_PROVIDERS);
+                                               }
+                                           })
+                                           .setNegativeButton(negativeButtonLabel, new DialogInterface.OnClickListener() {
+                                               @Override
+                                               public void onClick(DialogInterface dialog, int which) {
+
+                                                   dialog.cancel();
+                                                   if (negativeButtonLabel != R.string.close_app) {
+                                                       buildAlertMessageNoGps(R.string.msg_location_providers_are_required, R.string.enable,
+                                                                                     R.string.close_app);
+                                                   } else {
+                                                       closeApp("The application will be closed because it's unable to run without any " +
+                                                                        "location provider enabled.");
+                                                   }
+                                               }
+                                           }).show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        boolean subscribed = subscribeToLocationUpdates(locationManager);
+        if (subscribed) {
+            noEnabledProvidersDialog.cancel();
+        }
+    }
+
     /**
      * Creates a {@link LocationListener} which will be the one that request for location updates and then handle maps updates based on that
      * location.
@@ -309,6 +312,8 @@ public class MapActivity extends FragmentActivity {
                     Log.i(TAG, "Current location is: (" + location.getLatitude() + ", " + location.getLongitude() + ")");
 
                     LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+
+                    findPlacesNearBy(currentLocation);
 
                     updateLocationOnMap(currentLocation);
                 }
@@ -336,6 +341,22 @@ public class MapActivity extends FragmentActivity {
                 }
             }
         };
+    }
+
+    /**
+     * Find all places near the specified {@code currentLocation}.
+     *
+     * @param currentLocation
+     *         {@link LatLng} containing the current latitud-longitude pair.
+     */
+    private void findPlacesNearBy(LatLng currentLocation) {
+        List<Place> places = placeService.findAllNearBy(currentLocation.latitude, currentLocation.longitude);
+        Log.d(TAG, "Found: " + places.size() + " places.");
+
+        //  TODO : Functionality : Do something when no places are found.
+        for (Place eachPlace : places) {
+            Log.d(TAG, eachPlace.toString());
+        }
     }
 
     /**
@@ -385,35 +406,6 @@ public class MapActivity extends FragmentActivity {
     private void closeApp(String logMessage) {
         Log.i(TAG, logMessage);
         finish();
-    }
-
-    /**
-     * TODO : Javadoc for addWikipediaLayer
-     */
-    private void addWikipediaLayer() {
-        final String moonMapUrlFormat = "http://mw1.google.com/mw-planetary/lunar/lunarmaps_v1/clem_bw/%d/%d/%d.jpg";
-
-        TileProvider tileProvider = new UrlTileProvider(256, 256) {
-            @Override
-            public synchronized URL getTileUrl(int x, int y, int zoom) {
-
-                // The moon tile coordinate system is reversed.  This is not normal.
-                int reversedY = (1 << zoom) - y - 1;
-
-                String formattedUrl = String.format(Locale.US, moonMapUrlFormat, zoom, x, reversedY);
-
-                URL url;
-                try {
-                    url = new URL(formattedUrl);
-                } catch (MalformedURLException malformedUrlException) {
-                    throw new AssertionError(malformedUrlException);
-                }
-
-                return url;
-            }
-        };
-
-        mMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider));
     }
 
 }
