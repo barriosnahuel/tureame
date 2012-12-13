@@ -7,7 +7,7 @@
  * Created by: Nahuel Barrios.
  * On: 12/13/12 at 12:09 AMhs.
  */
-package org.nbempire.android.tourguide.util.wikipedia.domain;
+package org.nbempire.android.tourguide.domain.wikipedia;
 
 /**
  * Utility entity that represents a Query result from Wikipedia API.

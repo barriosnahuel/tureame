@@ -7,7 +7,7 @@
  * Created by: Nahuel Barrios.
  * On: 12/13/12 at 12:18 AMhs.
  */
-package org.nbempire.android.tourguide.util.wikipedia.domain;
+package org.nbempire.android.tourguide.domain.wikipedia;
 
 /**
  * Utility entity that represents a Place in the form that it is retrieved from Wikipedia.

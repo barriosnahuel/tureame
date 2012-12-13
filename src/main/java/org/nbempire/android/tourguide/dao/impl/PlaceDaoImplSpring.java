@@ -17,8 +17,8 @@ import java.util.List;
 import android.util.Log;
 import org.nbempire.android.tourguide.dao.PlaceDao;
 import org.nbempire.android.tourguide.domain.Place;
-import org.nbempire.android.tourguide.util.wikipedia.domain.WikipediaPlace;
-import org.nbempire.android.tourguide.util.wikipedia.domain.WikipediaResponse;
+import org.nbempire.android.tourguide.domain.wikipedia.WikipediaPlace;
+import org.nbempire.android.tourguide.domain.wikipedia.WikipediaResponse;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 

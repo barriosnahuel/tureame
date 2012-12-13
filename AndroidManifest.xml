@@ -47,6 +47,8 @@
             </intent-filter>
         </activity>
 
+        <!--TODO : Functionality : Add main activity to let users choose between find a city and display them there showing places or see places from current location -->
+
         <!--TODO : Functionality : Add "Legal Notices" activity: Attribution Requirements. If you use the Google Maps Android API in your application, you must include the Google Play Services attribution text as part of a "Legal Notices" section in your application. Including legal notices as an independent menu item, or as part of an "About" menu item, is recommended. The attribution text is available by making a call toGooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo.-->
     </application>
 

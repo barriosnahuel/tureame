@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
@@ -23,14 +24,17 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import org.nbempire.android.tourguide.R;
 import org.nbempire.android.tourguide.dao.impl.PlaceDaoImplSpring;
 import org.nbempire.android.tourguide.domain.Place;
 import org.nbempire.android.tourguide.service.PlaceService;
 import org.nbempire.android.tourguide.service.impl.PlaceServiceImpl;
+import org.nbempire.android.tourguide.util.wikipedia.WikipediaConstants;
 
 /**
  * Land-Activity of this application. It contains the main app screen where users can see the map with all its layers.
@@ -131,7 +135,26 @@ public class MapActivity extends FragmentActivity {
 
         displayLastKnownLocation(locationManager);
 
-        //  TODO : Functionality : show Wikipedia markers and other useful information.
+        //  TODO : Functionality : Navigate user to wikipedia's page onInfoWindowClick.
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                //  TODO : Implementation of .onInfoWindowClick() method.
+                Log.i(TAG, "User will now navigate to Wikipedia's page: " + marker.getTitle());
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getWikipediaPageUrl(marker.getTitle()))));
+            }
+        });
+
+        //  TODO : Functionality : Show useful information
+
+        //  TODO : Functionality : Show "atractions" from Google Places.
+
+        //  TODO : Functionality : Show events (eventsquare?).
+    }
+
+    private String getWikipediaPageUrl(String pageTitle) {
+        String transformedTitle = pageTitle.replace(" ", WikipediaConstants.URL_SPACE_REPLACEMENT);
+        return WikipediaConstants.PAGE_URL_PREFFIX + transformedTitle;
     }
 
     /**
@@ -358,9 +381,11 @@ public class MapActivity extends FragmentActivity {
         //  TODO : Functionality : Do something when no places are found.
         for (Place eachPlace : places) {
             MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(eachPlace.getLatitude(),
-                                                                                         eachPlace.getLongitude())).title(eachPlace.getTitle());
+                                                                                         eachPlace.getLongitude())).title(eachPlace.getTitle()
+            ).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_wikipedia));
             //  TODO : Functionality : Check about duplicating the marker onLocationChanged
             mMap.addMarker(markerOptions);
+            //  TODO : Functionality : Add onTapListener to markers to let user navigate to Wikipedia information.
 
             Log.d(TAG, eachPlace.toString());
         }
@@ -373,9 +398,11 @@ public class MapActivity extends FragmentActivity {
      *         The location to show.
      */
     private void updateLocationOnMap(LatLng location) {
+
+        //  TODO : Functionality : Before updating position on map, if user has changed the zoom or tilt, maintein it without changing it!
         CameraPosition position =
                 new CameraPosition.Builder().target(location)
-                        .zoom(mMap.getMaxZoomLevel() - 2)
+                        .zoom(mMap.getMaxZoomLevel() - 5)
                         .bearing(0)
                         .tilt((float) 67.5)
                         .build();
