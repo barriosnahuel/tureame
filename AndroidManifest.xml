@@ -1,20 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2012 Nahuel Barrios <barrios.nahuel@gmail.com>.
   ~ No se reconocerá ningún tipo de garantía.
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="org.nbempire.android.tourguide"
-          android:versionCode="1"
-          android:versionName="1.0">
+    package="org.nbempire.android.tourguide"
+    android:versionCode="1"
+    android:versionName="1.0">
 
     <uses-sdk android:minSdkVersion="8"
-              android:targetSdkVersion="16" />
+        android:targetSdkVersion="16" />
 
     <!--This permissions are for the Google Maps Android API V2-->
     <permission android:name="org.nbempire.android.tourguide.permission.MAPS_RECEIVE"
-                android:protectionLevel="signature" />
+        android:protectionLevel="signature" />
 
     <uses-permission android:name="org.nbempire.android.tourguide.permission.MAPS_RECEIVE" />
 
@@ -29,27 +28,26 @@
 
     <!--Because version 2 of the Google Maps Android API requires OpenGL ES version 2-->
     <uses-feature android:glEsVersion="0x00020000"
-                  android:required="true" />
+        android:required="true" />
 
-    <application
-            android:allowBackup="true"
-            android:icon="@drawable/ic_launcher"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme">
+    <application android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
 
-        <meta-data
-                android:name="com.google.android.maps.v2.API_KEY"
-                android:value="AIzaSyC3bGgh2LrwTnCunAh0v9Vs5i2Kk8ebBmU" />
+        <meta-data android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyC3bGgh2LrwTnCunAh0v9Vs5i2Kk8ebBmU" />
 
-        <activity
-                android:name=".component.activity.MapActivity"
-                android:label="@string/app_name">
+        <activity android:name=".component.activity.MapActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--TODO : Functionality : Add "Legal Notices" activity: Attribution Requirements. If you use the Google Maps Android API in your application, you must include the Google Play Services attribution text as part of a "Legal Notices" section in your application. Including legal notices as an independent menu item, or as part of an "About" menu item, is recommended. The attribution text is available by making a call toGooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo.-->
     </application>
 
 </manifest>
