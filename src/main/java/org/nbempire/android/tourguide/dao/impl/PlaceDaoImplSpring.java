@@ -42,6 +42,8 @@ public class PlaceDaoImplSpring implements PlaceDao {
 
     @Override
     public List<Place> findAllNearBy(double latitude, double longitude) {
+        //  TODO : Performance : Refactor, move this to WikipediaDao.
+
         RestTemplate restTemplate = new RestTemplate();
 
         // Add a JSON converter (use GSON instead of Jackson because is a smaller library)

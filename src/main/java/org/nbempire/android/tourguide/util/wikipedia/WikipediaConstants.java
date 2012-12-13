@@ -10,13 +10,20 @@
 package org.nbempire.android.tourguide.util.wikipedia;
 
 /**
- * TODO : Javadoc for WikipediaConstants
+ * Utility type to centralize Wikipedia constants.
  *
  * @author Nahuel Barrios.
  * @since 1
  */
-public class WikipediaConstants {
+public abstract class WikipediaConstants {
 
+    /**
+     * The URL used to navigate to a Wikipedia page. Client must append the name of any page.
+     */
     public static final String PAGE_URL_PREFFIX = "http://en.wikipedia.org/wiki/";
-    public static final String URL_SPACE_REPLACEMENT = "_";
+
+    /**
+     * Character used by Wikipedia to replace white spaces in the URL.
+     */
+    public static final char URL_SPACE_REPLACEMENT = '_';
 }
