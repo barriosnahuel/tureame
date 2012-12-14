@@ -173,7 +173,7 @@ public class MapActivity extends FragmentActivity {
         if (noLocationProvidersEnabled(locationManager, providers)) {
             Log.w(TAG, "There isn't any enabled provider to retrieve current location.");
             subscribed = false;
-            buildAlertMessageNoGps(R.string.msg_gps_is_disabled_do_you_want_to_enable_it, R.string.yes, R.string.no);
+            buildAlertMessageNoGps(R.string.msg_my_location_sources_disabled, R.string.enable, R.string.no);
         } else {
             for (String eachProvider : providers) {
                 Log.i(TAG, "Request location updates for provider: " + eachProvider);
@@ -212,7 +212,7 @@ public class MapActivity extends FragmentActivity {
             lastKnownLocation = lastKnownLocationByNetwork;
         }
 
-        Toast.makeText(this, R.string.msg_we_re_finding_you_dont_hide_and_wait_a_moment_please, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, R.string.msg_waiting_for_location, Toast.LENGTH_LONG).show();
         if (lastKnownLocation != null) {
             Log.i(TAG, "Showing last known location on map...");
             updateLocationOnMap(lastKnownLocation);

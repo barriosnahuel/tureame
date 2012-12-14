@@ -6,7 +6,6 @@
 <resources>
 
     <string name="app_name">I\'m a tourist</string>
-    <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="enable">Enable</string>
     <string name="close_app">Close app!</string>
