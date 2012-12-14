@@ -19,6 +19,7 @@ import org.nbempire.android.tourguide.dao.PlaceDao;
 import org.nbempire.android.tourguide.domain.Place;
 import org.nbempire.android.tourguide.domain.wikipedia.WikipediaPlace;
 import org.nbempire.android.tourguide.domain.wikipedia.WikipediaResponse;
+import org.nbempire.android.tourguide.util.wikipedia.WikipediaConstants;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -35,11 +36,6 @@ public class PlaceDaoImplSpring implements PlaceDao {
      */
     private static final String TAG = "PlaceDaoImplSpring";
 
-    /**
-     * The search radius (in meters) to find places.
-     */
-    private static final short SEARCH_RADIUS = 500;
-
     @Override
     public List<Place> findAllNearBy(double latitude, double longitude) {
         //  TODO : Performance : Refactor, move this to WikipediaDao.
@@ -54,7 +50,7 @@ public class PlaceDaoImplSpring implements PlaceDao {
                                    "&list=geosearch" +
                                    "&format=json" +
                                    "&gscoord=" + latitude + "%7C" + longitude +
-                                   "&gsradius=" + SEARCH_RADIUS +
+                                   "&gsradius=" + WikipediaConstants.MAXIMUM_SEARCH_RADIUS +
                                    "&gslimit=10";
         URI url = null;
         try {
@@ -67,7 +63,8 @@ public class PlaceDaoImplSpring implements PlaceDao {
         //  TODO : Functionality : Catch errors here. (no converter, unknown host, etc)
         WikipediaResponse response = restTemplate.getForObject(url, WikipediaResponse.class);
 
-        //  TODO : Functionality : Check for null (if the retrieved JSON has another format than my WikipediaResponse.
+        //  TODO : Functionality : Check for null (if the retrieved JSON has another format than my WikipediaResponse. E.g. getQuery() will
+        // return null if the radius is not between the valid values (10-10000)
         WikipediaPlace[] wikipediaPlaces = response.getQuery().getGeosearch();
         Log.i(TAG, "Found: " + wikipediaPlaces.length + " wikipedia places for (lat, lon): (" + latitude + ", " + longitude + ").");
 

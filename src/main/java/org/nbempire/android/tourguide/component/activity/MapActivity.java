@@ -361,7 +361,21 @@ public class MapActivity extends FragmentActivity {
 
                 if (noLocationProvidersEnabled(locationManager)) {
                     Log.w(TAG, "There isn't any enabled provider to retrieve current location.");
-                    buildAlertMessageNoGps(R.string.msg_gps_is_disabled_do_you_want_to_enable_it, R.string.yes, R.string.no);
+
+                    //  TODO : BUG : Fix runtime exception when trying to show AlertDialog on my activity when it is paused (actually when
+                    // user is not focused in my app.
+
+                    //12-13 23:50:12.181: ERROR/AndroidRuntime(7431): FATAL EXCEPTION: main
+                    //android.view.WindowManager$BadTokenException: Unable to add window -- token android.os.BinderProxy@404e7618 is not valid; is your activity running?
+                    //at android.view.ViewRoot.setView(ViewRoot.java:530)
+                    //at android.view.WindowManagerImpl.addView(WindowManagerImpl.java:177)
+                    //at android.view.WindowManagerImpl.addView(WindowManagerImpl.java:91)
+                    //at android.view.Window$LocalWindowManager.addView(Window.java:424)
+                    //at android.app.Dialog.show(Dialog.java:241)
+                    //at android.app.AlertDialog$Builder.show(AlertDialog.java:802)
+                    //at org.nbempire.android.tourguide.component.activity.MapActivity.buildAlertMessageNoGps(MapActivity.java:284)
+
+                    //buildAlertMessageNoGps(R.string.msg_gps_is_disabled_do_you_want_to_enable_it, R.string.yes, R.string.no);
                 }
             }
         };
@@ -400,7 +414,7 @@ public class MapActivity extends FragmentActivity {
         //  TODO : Functionality : Before updating position on map, if user has changed the zoom or tilt, maintein it without changing it!
         CameraPosition position =
                 new CameraPosition.Builder().target(location)
-                        .zoom(mMap.getMaxZoomLevel() - 5)
+                        .zoom(mMap.getMaxZoomLevel() - 8)
                         .bearing(0)
                         .tilt((float) 67.5)
                         .build();

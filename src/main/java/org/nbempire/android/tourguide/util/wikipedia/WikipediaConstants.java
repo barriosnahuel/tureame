@@ -26,4 +26,9 @@ public abstract class WikipediaConstants {
      * Character used by Wikipedia to replace white spaces in the URL.
      */
     public static final char URL_SPACE_REPLACEMENT = '_';
+
+    /**
+     * The maximum valid search radius (in meters) to find places (10km).
+     */
+    public static final short MAXIMUM_SEARCH_RADIUS = 10000;
 }
