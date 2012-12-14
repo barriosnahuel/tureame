@@ -85,12 +85,20 @@ public class MapActivity extends FragmentActivity {
      */
     private WikipediaService wikipediaService = new WikipediaServiceImpl();
 
+    /**
+     * The location manager used to retrieve location updates.
+     */
+    private LocationManager locationManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         setUpMapIfNeeded();
+
+        displayLastKnownLocation(locationManager);
     }
 
     @Override
@@ -99,6 +107,8 @@ public class MapActivity extends FragmentActivity {
 
         //  TODO : Performance : Should I leave only this call to the method? Review "Activities lifecycle" topic.
         setUpMapIfNeeded();
+
+        Log.i(TAG, "Subscribed to location updates? " + subscribeToLocationUpdates());
     }
 
     /**
@@ -117,8 +127,7 @@ public class MapActivity extends FragmentActivity {
         if (mMap == null) {
 
             // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-                           .getMap();
+            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
@@ -135,12 +144,6 @@ public class MapActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        subscribeToLocationUpdates(locationManager);
-
-        displayLastKnownLocation(locationManager);
-
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
@@ -157,15 +160,15 @@ public class MapActivity extends FragmentActivity {
     }
 
     /**
-     * Gets the current location from {@link #mMap} enabling MyLocation layer when needed. If there's no location data available then shows an
-     * error message to the user.
+     * Subscribe the {@link #locationManager} to location updates. If there's no location provider enabled then shows an error message to the
+     * user to let him enable providers from the system location settings.
      *
-     * @param locationManager
-     *         The {@link LocationManager} used to retrieve the information.
+     * @return {@code true} when the {@link #locationManager} is subscribed to location updates. Otherwise {@code false}.
      */
-    private boolean subscribeToLocationUpdates(LocationManager locationManager) {
-        LocationListener locationListener = createLocationListener(locationManager);
+    private boolean subscribeToLocationUpdates() {
+        LocationListener locationListener = createLocationListener();
 
+        //  TODO : Performance : Change providers list to Set to prevent duplicates.
         List<String> providers = new ArrayList<String>();
 
         boolean subscribed = true;
@@ -233,8 +236,8 @@ public class MapActivity extends FragmentActivity {
      */
     private boolean noLocationProvidersEnabled(LocationManager locationManager, List<String> providers) {
         // Register the listener with the Location Manager to receive location updates
-        addLocationProviderIfEnabled(providers, locationManager, LocationManager.GPS_PROVIDER);
-        addLocationProviderIfEnabled(providers, locationManager, LocationManager.NETWORK_PROVIDER);
+        addLocationProviderIfEnabled(providers, LocationManager.GPS_PROVIDER);
+        addLocationProviderIfEnabled(providers, LocationManager.NETWORK_PROVIDER);
 
         return providers.isEmpty();
     }
@@ -258,12 +261,10 @@ public class MapActivity extends FragmentActivity {
      *
      * @param locationProviders
      *         List of enabled providers.
-     * @param locationManager
-     *         The {@link LocationManager} to retrieve information about enabled providers.
      * @param provider
      *         The provider to add.
      */
-    private void addLocationProviderIfEnabled(List<String> locationProviders, LocationManager locationManager, String provider) {
+    private void addLocationProviderIfEnabled(List<String> locationProviders, String provider) {
         if (locationManager.isProviderEnabled(provider)) {
             locationProviders.add(provider);
         }
@@ -308,8 +309,7 @@ public class MapActivity extends FragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        boolean subscribed = subscribeToLocationUpdates(locationManager);
+        boolean subscribed = subscribeToLocationUpdates();
         if (subscribed) {
             noEnabledProvidersDialog.cancel();
         }
@@ -319,12 +319,9 @@ public class MapActivity extends FragmentActivity {
      * Creates a {@link LocationListener} which will be the one that request for location updates and then handle maps updates based on that
      * location.
      *
-     * @param locationManager
-     *         The location manager to use.
-     *
      * @return A listener ready to use.
      */
-    private LocationListener createLocationListener(final LocationManager locationManager) {
+    private LocationListener createLocationListener() {
         // Define a listener that responds to location updates
         return new LocationListener() {
             @Override
@@ -357,25 +354,10 @@ public class MapActivity extends FragmentActivity {
 
             @Override
             public void onProviderDisabled(String provider) {
-                Log.w(TAG, "Disabled provider: " + provider);
+                Log.i(TAG, "Disabled provider: " + provider);
 
                 if (noLocationProvidersEnabled(locationManager)) {
                     Log.w(TAG, "There isn't any enabled provider to retrieve current location.");
-
-                    //  TODO : BUG : Fix runtime exception when trying to show AlertDialog on my activity when it is paused (actually when
-                    // user is not focused in my app.
-
-                    //12-13 23:50:12.181: ERROR/AndroidRuntime(7431): FATAL EXCEPTION: main
-                    //android.view.WindowManager$BadTokenException: Unable to add window -- token android.os.BinderProxy@404e7618 is not valid; is your activity running?
-                    //at android.view.ViewRoot.setView(ViewRoot.java:530)
-                    //at android.view.WindowManagerImpl.addView(WindowManagerImpl.java:177)
-                    //at android.view.WindowManagerImpl.addView(WindowManagerImpl.java:91)
-                    //at android.view.Window$LocalWindowManager.addView(Window.java:424)
-                    //at android.app.Dialog.show(Dialog.java:241)
-                    //at android.app.AlertDialog$Builder.show(AlertDialog.java:802)
-                    //at org.nbempire.android.tourguide.component.activity.MapActivity.buildAlertMessageNoGps(MapActivity.java:284)
-
-                    //buildAlertMessageNoGps(R.string.msg_gps_is_disabled_do_you_want_to_enable_it, R.string.yes, R.string.no);
                 }
             }
         };
