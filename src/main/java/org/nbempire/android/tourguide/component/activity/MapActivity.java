@@ -175,6 +175,7 @@ public class MapActivity extends FragmentActivity {
             subscribed = false;
             buildAlertMessageNoGps(R.string.msg_my_location_sources_disabled, R.string.enable, R.string.no);
         } else {
+            Toast.makeText(this, R.string.msg_waiting_for_location, Toast.LENGTH_LONG).show();
             for (String eachProvider : providers) {
                 Log.i(TAG, "Request location updates for provider: " + eachProvider);
 
@@ -212,7 +213,6 @@ public class MapActivity extends FragmentActivity {
             lastKnownLocation = lastKnownLocationByNetwork;
         }
 
-        Toast.makeText(this, R.string.msg_waiting_for_location, Toast.LENGTH_LONG).show();
         if (lastKnownLocation != null) {
             Log.i(TAG, "Showing last known location on map...");
             updateLocationOnMap(lastKnownLocation);
