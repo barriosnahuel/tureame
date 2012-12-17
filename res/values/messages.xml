@@ -4,7 +4,8 @@
   -->
 
 <resources>
-    <string name="msg_my_location_sources_disabled">Your GPS seems to be disabled, please enable a My Location source in system settings.
+    <string name="msg_my_location_providers_disabled">Your location providers seems to be disabled, please enable a My Location source in system
+        settings.
     </string>
     <string name="msg_waiting_for_location">Waiting for location</string>
     <string name="msg_location_providers_are_required">Either GPS or wireless networks are required to run this application, please enable at

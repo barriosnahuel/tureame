@@ -176,7 +176,7 @@ public class MapActivity extends FragmentActivity {
         if (noLocationProvidersEnabled(locationManager, providers)) {
             Log.w(TAG, "There isn't any enabled provider to retrieve current location.");
             subscribed = false;
-            buildAlertMessageNoGps(R.string.msg_my_location_sources_disabled, R.string.enable, R.string.no);
+            buildAlertMessageNoGps();
         } else {
             Toast.makeText(this, R.string.msg_waiting_for_location, Toast.LENGTH_LONG).show();
             for (String eachProvider : providers) {
@@ -273,36 +273,22 @@ public class MapActivity extends FragmentActivity {
 
     /**
      * Creates an {AlertDialog} to take user to his location settings to let him enable any location provider.
-     *
-     * @param alertMessage
-     *         The resource ID for the message to show in the {@link AlertDialog}.
-     * @param positiveButtonLabel
-     *         The resource ID for the positive button label.
-     * @param negativeButtonLabel
-     *         The resource ID for the negative button label.
      */
-    private void buildAlertMessageNoGps(int alertMessage, int positiveButtonLabel, final int negativeButtonLabel) {
+    private void buildAlertMessageNoGps() {
         noEnabledProvidersDialog = new AlertDialog.Builder(this)
-                                           .setMessage(alertMessage)
+                                           .setMessage(R.string.msg_my_location_providers_disabled)
                                            .setCancelable(false)
-                                           .setPositiveButton(positiveButtonLabel, new DialogInterface.OnClickListener() {
+                                           .setPositiveButton(R.string.enable, new DialogInterface.OnClickListener() {
                                                @Override
                                                public void onClick(DialogInterface dialog, int which) {
                                                    startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), REQUEST_CODE_ENABLE_LOCATION_PROVIDERS);
                                                }
                                            })
-                                           .setNegativeButton(negativeButtonLabel, new DialogInterface.OnClickListener() {
+                                           .setNegativeButton(R.string.no_close_app, new DialogInterface.OnClickListener() {
                                                @Override
                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                   dialog.cancel();
-                                                   if (negativeButtonLabel != R.string.close_app) {
-                                                       buildAlertMessageNoGps(R.string.msg_location_providers_are_required, R.string.enable,
-                                                                                     R.string.close_app);
-                                                   } else {
-                                                       closeApp("The application will be closed because it's unable to run without any " +
-                                                                        "location provider enabled.");
-                                                   }
+                                                   closeApp("The application will be closed because it's unable to run without any " +
+                                                                    "location provider enabled.");
                                                }
                                            }).show();
     }
@@ -396,7 +382,7 @@ public class MapActivity extends FragmentActivity {
         //  TODO : Functionality : Before updating position on map, if user has changed the zoom or tilt, maintein it without changing it!
         CameraPosition position =
                 new CameraPosition.Builder().target(location)
-                        .zoom(mMap.getMaxZoomLevel() - 8)
+                        .zoom(mMap.getMaxZoomLevel() - 6)
                         .bearing(0)
                         .tilt((float) 67.5)
                         .build();
