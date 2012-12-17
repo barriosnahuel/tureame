@@ -30,7 +30,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import org.nbempire.android.tourguide.R;
-import org.nbempire.android.tourguide.dao.impl.PlaceDaoImplSpring;
+import org.nbempire.android.tourguide.dao.impl.PlaceDaoImpl;
+import org.nbempire.android.tourguide.dao.impl.WikipediaDaoImplSpring;
 import org.nbempire.android.tourguide.domain.Place;
 import org.nbempire.android.tourguide.service.PlaceService;
 import org.nbempire.android.tourguide.service.WikipediaService;
@@ -78,12 +79,12 @@ public class MapActivity extends FragmentActivity {
     /**
      * Service for the {@link Place} entity.
      */
-    private PlaceService placeService = new PlaceServiceImpl(new PlaceDaoImplSpring());
+    private PlaceService placeService;
 
     /**
      * Service for Wikipedia domain objects.
      */
-    private WikipediaService wikipediaService = new WikipediaServiceImpl();
+    private WikipediaService wikipediaService;
 
     /**
      * The location manager used to retrieve location updates.
@@ -95,7 +96,11 @@ public class MapActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        wikipediaService = new WikipediaServiceImpl(new WikipediaDaoImplSpring());
+        placeService = new PlaceServiceImpl(new PlaceDaoImpl(wikipediaService));
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
         setUpMapIfNeeded();
 
         displayLastKnownLocation(locationManager);

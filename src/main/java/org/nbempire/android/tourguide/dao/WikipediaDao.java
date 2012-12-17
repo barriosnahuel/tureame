@@ -5,29 +5,19 @@
 
 /**
  * Created by: Nahuel Barrios.
- * On: 12/13/12 at 2:30 PMhs.
+ * On: 12/17/12 at 1:46 PMhs.
  */
-package org.nbempire.android.tourguide.service;
+package org.nbempire.android.tourguide.dao;
 
 import org.nbempire.android.tourguide.domain.wikipedia.WikipediaPlace;
 
 /**
- * Service for Wikipedia domain objects.
+ * DAO for Wikipedia domain objects.
  *
  * @author Nahuel Barrios.
  * @since 1
  */
-public interface WikipediaService {
-
-    /**
-     * Gets the URL of the specified {@code pageTitle}.
-     *
-     * @param pageTitle
-     *         The title of a valid page in Wikipedia.
-     *
-     * @return A valid URL.
-     */
-    String getPageUrl(String pageTitle);
+public interface WikipediaDao {
 
     /**
      * Find all places from Wikipedia API that are near to the specified location.
@@ -39,5 +29,5 @@ public interface WikipediaService {
      *
      * @return An array of WikipediaPlace.
      */
-    WikipediaPlace[] queryGeosearch(double latitude, double longitude);
+    WikipediaPlace[] queryByGeosearch(double latitude, double longitude);
 }

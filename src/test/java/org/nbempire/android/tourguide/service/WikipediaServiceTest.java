@@ -11,6 +11,7 @@ package org.nbempire.android.tourguide.service;
 
 import junit.framework.Assert;
 import org.junit.Test;
+import org.nbempire.android.tourguide.dao.impl.WikipediaDaoImplSpring;
 import org.nbempire.android.tourguide.service.impl.WikipediaServiceImpl;
 import org.nbempire.android.tourguide.util.wikipedia.WikipediaConstants;
 
@@ -27,7 +28,7 @@ public class WikipediaServiceTest {
      */
     @Test
     public void getPageUrl_validPageTitle_returnUrl() {
-        WikipediaService wikipediaService = new WikipediaServiceImpl();
+        WikipediaService wikipediaService = new WikipediaServiceImpl(new WikipediaDaoImplSpring());
 
         String url = wikipediaService.getPageUrl("Un Titulo");
         Assert.assertNotNull(url);
