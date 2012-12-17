@@ -5,8 +5,9 @@
 
 package org.nbempire.android.tourguide.component.activity;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -165,11 +166,9 @@ public class MapActivity extends FragmentActivity {
             }
         });
 
-        //  TODO : Functionality : Show useful information layer
-
         //  TODO : Functionality : Show "atractions" from Google Places on map.
 
-        //  TODO : Functionality : Show events (eventsquare?) on map.
+        //  TODO : Functionality : Show events on map.
     }
 
     /**
@@ -181,8 +180,7 @@ public class MapActivity extends FragmentActivity {
     private boolean subscribeToLocationUpdates() {
         LocationListener locationListener = createLocationListener();
 
-        //  TODO : Performance : Change providers list to Set to prevent duplicates.
-        List<String> providers = new ArrayList<String>();
+        Set<String> providers = new HashSet<String>();
 
         boolean subscribed = true;
 
@@ -213,7 +211,7 @@ public class MapActivity extends FragmentActivity {
         Location lastKnownLocationByGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         Location lastKnownLocationByNetwork = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-        Location lastKnownLocation = null;
+        Location lastKnownLocation;
         if (lastKnownLocationByGps != null && lastKnownLocationByNetwork != null) {
 
             if (lastKnownLocationByGps.getTime() > lastKnownLocationByNetwork.getTime()) {
@@ -241,13 +239,13 @@ public class MapActivity extends FragmentActivity {
      * Check for enabled location providers and add those ones to {@code providers} list.
      *
      * @param locationManager
-     *         The {@link LocationManager} used to retrieve location providers information.
+     *         The {@link android.location.LocationManager} used to retrieve location providers information.
      * @param providers
-     *         A list of location providers to update.
+     *         A set of location providers to update.
      *
      * @return {@code true} when there isn't any location provider enabled. {@code false} when at least one location provider is enabled.
      */
-    private boolean noLocationProvidersEnabled(LocationManager locationManager, List<String> providers) {
+    private boolean noLocationProvidersEnabled(LocationManager locationManager, Set<String> providers) {
         // Register the listener with the Location Manager to receive location updates
         addLocationProviderIfEnabled(providers, LocationManager.GPS_PROVIDER);
         addLocationProviderIfEnabled(providers, LocationManager.NETWORK_PROVIDER);
@@ -256,7 +254,7 @@ public class MapActivity extends FragmentActivity {
     }
 
     /**
-     * It does the same as {@link #noLocationProvidersEnabled(android.location.LocationManager, java.util.List)} but without modifying the {@code
+     * It does the same as {@link #noLocationProvidersEnabled(android.location.LocationManager, java.util.Set)} but without modifying the {@code
      * providers} list.
      *
      * @param locationManager
@@ -265,7 +263,7 @@ public class MapActivity extends FragmentActivity {
      * @return {@code true} when there isn't any location provider enabled. {@code false} when at least one location provider is enabled.
      */
     private boolean noLocationProvidersEnabled(LocationManager locationManager) {
-        return noLocationProvidersEnabled(locationManager, new ArrayList<String>());
+        return noLocationProvidersEnabled(locationManager, new HashSet<String>());
     }
 
     /**
@@ -273,11 +271,11 @@ public class MapActivity extends FragmentActivity {
      * enabled.
      *
      * @param locationProviders
-     *         List of enabled providers.
+     *         Set of enabled providers.
      * @param provider
      *         The provider to add.
      */
-    private void addLocationProviderIfEnabled(List<String> locationProviders, String provider) {
+    private void addLocationProviderIfEnabled(Set<String> locationProviders, String provider) {
         if (locationManager.isProviderEnabled(provider)) {
             locationProviders.add(provider);
         }
