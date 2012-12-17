@@ -20,7 +20,11 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -95,6 +99,10 @@ public class MapActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        String algo = GooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo(this);
+
+        //Log.i(TAG, );
 
         wikipediaService = new WikipediaServiceImpl(new WikipediaDaoImplSpring());
         placeService = new PlaceServiceImpl(new PlaceDaoImpl(wikipediaService));
@@ -427,4 +435,16 @@ public class MapActivity extends FragmentActivity {
         finish();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_map, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        startActivity(new Intent(this, LegalNoticesActivity.class));
+        return true;
+    }
 }

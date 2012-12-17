@@ -9,5 +9,6 @@
     <string name="no">No</string>
     <string name="enable">Enable</string>
     <string name="no_close_app">No, close app!</string>
+    <string name="legal_notices">Legal notices</string>
 
 </resources>
