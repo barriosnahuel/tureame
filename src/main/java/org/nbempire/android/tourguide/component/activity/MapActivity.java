@@ -25,7 +25,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -52,14 +51,18 @@ import org.nbempire.android.tourguide.service.impl.WikipediaServiceImpl;
 public class MapActivity extends FragmentActivity {
 
     /**
-     * Time (in milliseconds) to wait between location updates.
+     * Time (in milliseconds) to wait between location updates. 2 minutes.
+     * <p/>
+     * Note: Use 10000 for testing.
      */
-    private static final long MIN_TIME_FOR_LOCATION_UPDATES = 15000;
+    private static final long MIN_TIME_FOR_LOCATION_UPDATES = 120000;
 
     /**
      * Minimum distance (in meters) to request location updates.
+     * <p/>
+     * Note: Use 0 for testing.
      */
-    private static final long MIN_DISTANCE_FOR_LOCATION_UPDATES = 0;
+    private static final long MIN_DISTANCE_FOR_LOCATION_UPDATES = 50;
 
     /**
      * Request code used to handle startActivityForResult to let user enable location providers from Settings.Secure intent.
@@ -101,10 +104,6 @@ public class MapActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        String algo = GooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo(this);
-
-        //Log.i(TAG, );
-
         wikipediaService = new WikipediaServiceImpl(new WikipediaDaoImplSpring());
         placeService = new PlaceServiceImpl(new PlaceDaoImpl(wikipediaService));
 
@@ -112,7 +111,7 @@ public class MapActivity extends FragmentActivity {
 
         setUpMapIfNeeded();
 
-        displayLastKnownLocation(locationManager);
+        displayLastKnownLocation();
     }
 
     @Override
@@ -178,8 +177,6 @@ public class MapActivity extends FragmentActivity {
      * @return {@code true} when the {@link #locationManager} is subscribed to location updates. Otherwise {@code false}.
      */
     private boolean subscribeToLocationUpdates() {
-        LocationListener locationListener = createLocationListener();
-
         Set<String> providers = new HashSet<String>();
 
         boolean subscribed = true;
@@ -194,6 +191,7 @@ public class MapActivity extends FragmentActivity {
                 Log.i(TAG, "Request location updates for provider: " + eachProvider);
 
                 // Register the listener with the Location Manager to receive location updates
+                //  TODO : Performance : Check about requesting location updates only once. Read Javadoc.
                 locationManager.requestLocationUpdates(eachProvider, MIN_TIME_FOR_LOCATION_UPDATES, MIN_DISTANCE_FOR_LOCATION_UPDATES, locationListener);
             }
         }
@@ -203,11 +201,8 @@ public class MapActivity extends FragmentActivity {
 
     /**
      * Display last known location if exists in any of GPS or network providers.
-     *
-     * @param locationManager
-     *         The location manager to use for retrieve location information.
      */
-    private void displayLastKnownLocation(LocationManager locationManager) {
+    private void displayLastKnownLocation() {
         Location lastKnownLocationByGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         Location lastKnownLocationByNetwork = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
@@ -313,61 +308,13 @@ public class MapActivity extends FragmentActivity {
     }
 
     /**
-     * Creates a {@link LocationListener} which will be the one that request for location updates and then handle maps updates based on that
-     * location.
-     *
-     * @return A listener ready to use.
-     */
-    private LocationListener createLocationListener() {
-        // Define a listener that responds to location updates
-        return new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                if (location == null) {
-                    Log.e(TAG, "location is null.");
-                } else {
-                    Log.i(TAG, "Current location is: (" + location.getLatitude() + ", " + location.getLongitude() + ")");
-
-                    LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-
-                    //  TODO : Functionality : Don't update places if they already exist.
-                    addMarkersOnPlacesNearBy(currentLocation);
-
-                    updateLocationOnMap(currentLocation);
-                }
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-                Log.i(TAG, "status changed for provider: " + provider);
-                //  TODO : Functionality : do something onStatusChanged for a provider.
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-                Log.i(TAG, "Enabled provider: " + provider);
-                locationManager.requestLocationUpdates(provider, MIN_TIME_FOR_LOCATION_UPDATES, MIN_DISTANCE_FOR_LOCATION_UPDATES, this);
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-                Log.i(TAG, "Disabled provider: " + provider);
-
-                if (noLocationProvidersEnabled(locationManager)) {
-                    Log.w(TAG, "There isn't any enabled provider to retrieve current location.");
-                }
-            }
-        };
-    }
-
-    /**
      * Find all places near the specified {@code currentLocation} and add it to the current map.
      *
      * @param currentLocation
      *         {@link LatLng} containing the current latitud-longitude pair.
      */
-    private void addMarkersOnPlacesNearBy(LatLng currentLocation) {
-        List<Place> places = placeService.findAllNearBy(currentLocation.latitude, currentLocation.longitude);
+    private void addMarkersOnPlacesNearBy(Location currentLocation) {
+        List<Place> places = placeService.findAllNearBy(currentLocation.getLatitude(), currentLocation.getLongitude());
         Log.d(TAG, "Found: " + places.size() + " places.");
 
         if (places.isEmpty()) {
@@ -375,6 +322,8 @@ public class MapActivity extends FragmentActivity {
                                                   wikipediaService.getSearchRadiusInKm());
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         } else {
+            mMap.clear();
+
             for (Place eachPlace : places) {
                 MarkerOptions markerOptions = new MarkerOptions()
                                                       .position(new LatLng(eachPlace.getLatitude(), eachPlace.getLongitude()))
@@ -390,22 +339,22 @@ public class MapActivity extends FragmentActivity {
     }
 
     /**
-     * Update the displayed location on the map with the specified one.
+     * Update the displayed location on the map with the specified one by centering the map on that location.
      *
      * @param location
      *         The location to show.
      */
-    private void updateLocationOnMap(LatLng location) {
+    private void updateLocationOnMap(Location location) {
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-        //  TODO : Functionality : Before updating position on map, if user has changed the zoom or tilt, maintein it without changing it!
-        CameraPosition position =
-                new CameraPosition.Builder().target(location)
-                        .zoom(mMap.getMaxZoomLevel() - 6)
-                        .bearing(0)
-                        .tilt((float) 67.5)
-                        .build();
+        //  TODO : Functionality : Before updating cameraPosition on map, if user has changed the zoom or tilt, maintein it without changing it!
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng)
+                                                .zoom(mMap.getMaxZoomLevel() - 6)
+                                                .bearing(0)
+                                                .tilt((float) 67.5)
+                                                .build();
 
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(position),
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition),
                                   new GoogleMap.CancelableCallback() {
                                       @Override
                                       public void onFinish() {
@@ -417,16 +366,6 @@ public class MapActivity extends FragmentActivity {
                                           //  TODO : Implementation of .onCancel() method.
                                       }
                                   });
-    }
-
-    /**
-     * Update the displayed location on the map with the specified one.
-     *
-     * @param location
-     *         The location to show.
-     */
-    private void updateLocationOnMap(Location location) {
-        updateLocationOnMap(new LatLng(location.getLatitude(), location.getLongitude()));
     }
 
     /**
@@ -452,4 +391,76 @@ public class MapActivity extends FragmentActivity {
         startActivity(new Intent(this, LegalNoticesActivity.class));
         return true;
     }
+
+    /**
+     * The {@link LocationListener} which will be the one that request for location updates and then handle maps updates based on that location.
+     */
+    private LocationListener locationListener = new LocationListener() {
+
+        /**
+         * Error bound to consider when validating the distance (in meters) between two different locations.
+         * <p/>
+         * Note: Use 0 for testing.
+         */
+        public static final float MIN_DISTANCE_ERROR_BOUND = 20;
+
+        /**
+         * The current location. Should be the visible location on map.
+         */
+        private Location currentLocation;
+
+        @Override
+        public void onLocationChanged(Location location) {
+            if (location == null) {
+                Log.e(TAG, "location is null.");
+            } else {
+                Log.i(TAG, "Current location is: (" + location.getLatitude() + ", " + location.getLongitude() + ")");
+
+                if (locationHasChanged(location)) {
+                    currentLocation = location;
+
+                    addMarkersOnPlacesNearBy(currentLocation);
+
+                    updateLocationOnMap(currentLocation);
+                }
+
+            }
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            Log.i(TAG, "status changed for provider: " + provider);
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            Log.i(TAG, "Enabled provider: " + provider);
+            locationManager.requestLocationUpdates(provider, MIN_TIME_FOR_LOCATION_UPDATES, MIN_DISTANCE_FOR_LOCATION_UPDATES, this);
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            Log.i(TAG, "Disabled provider: " + provider);
+
+            if (noLocationProvidersEnabled(locationManager)) {
+                Log.w(TAG, "There isn't any enabled provider to retrieve current location.");
+            }
+        }
+
+        /**
+         * Validates when the specified location has an important difference with the last known location. That important difference will be the
+         * value of the {@link #MIN_DISTANCE_ERROR_BOUND} constant.
+         *
+         * @param updatedLocation
+         *         The updated location.
+         *
+         * @return {@code true} when the {@link #currentLocation} is null or the distance (in meters) between the las known location and the
+         *         specified {@code updatedLocation} is greater than the value of {@link #MIN_DISTANCE_ERROR_BOUND}.
+         */
+        private boolean locationHasChanged(Location updatedLocation) {
+            return currentLocation == null
+                           || currentLocation.distanceTo(updatedLocation) > MIN_DISTANCE_ERROR_BOUND;
+        }
+    };
+
 }
