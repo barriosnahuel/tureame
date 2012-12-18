@@ -29,13 +29,20 @@
     <option name="TOOL_WINDOW_LOG_LEVEL" value="INFO" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5ff337b5-bdaf-4133-b1cb-61ef8f567042" name="Default" comment="" />
+    <list default="true" id="5ff337b5-bdaf-4133-b1cb-61ef8f567042" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/ic_launcher.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-ldpi/ic_launcher.png" afterPath="$PROJECT_DIR$/res/drawable-ldpi/ic_launcher.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-mdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/res/drawable-mdpi/ic_launcher.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/ic_launcher.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/nbempire/android/tourguide/component/activity/MapActivity.java" afterPath="$PROJECT_DIR$/src/main/java/org/nbempire/android/tourguide/component/activity/MapActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="tourGuide.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="5ff337b5-bdaf-4133-b1cb-61ef8f567042" time="1355833027349" ignored="false" />
-    <file path="/fragment.java" changelist="5ff337b5-bdaf-4133-b1cb-61ef8f567042" time="1355778348212" ignored="false" />
+    <file path="/Dummy.txt" changelist="5ff337b5-bdaf-4133-b1cb-61ef8f567042" time="1355848415534" ignored="false" />
+    <file path="/fragment.java" changelist="5ff337b5-bdaf-4133-b1cb-61ef8f567042" time="1355850647673" ignored="false" />
     <file path="/strings.xml" changelist="5ff337b5-bdaf-4133-b1cb-61ef8f567042" time="1355764698299" ignored="false" />
-    <file path="/MapActivity.java" changelist="5ff337b5-bdaf-4133-b1cb-61ef8f567042" time="1355834303404" ignored="false" />
+    <file path="/MapActivity.java" changelist="5ff337b5-bdaf-4133-b1cb-61ef8f567042" time="1355851826803" ignored="false" />
     <file path="/Place.java" changelist="5ff337b5-bdaf-4133-b1cb-61ef8f567042" time="1355401099851" ignored="false" />
     <file path="/AndroidManifest.xml" changelist="5ff337b5-bdaf-4133-b1cb-61ef8f567042" time="1355778543326" ignored="false" />
     <file path="/WikipediaConstants.java" changelist="5ff337b5-bdaf-4133-b1cb-61ef8f567042" time="1355458088251" ignored="false" />
@@ -53,7 +60,6 @@
     <file path="$PROJECT_DIR$/../magicAnnotator/gen/com/nbempire/android/magicannotator/R.java" changelist="5ff337b5-bdaf-4133-b1cb-61ef8f567042" time="1355778132671" ignored="false" />
     <file path="/LegalNoticesActivity.java" changelist="5ff337b5-bdaf-4133-b1cb-61ef8f567042" time="1355780560257" ignored="false" />
     <file path="/activity_legal_notices.xml" changelist="5ff337b5-bdaf-4133-b1cb-61ef8f567042" time="1355780174992" ignored="false" />
-    <file path="$PROJECT_DIR$/.idea/workspace.xml" changelist="5ff337b5-bdaf-4133-b1cb-61ef8f567042" time="1355785431910" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,9 +74,8 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <breakpoint_rules default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
-      <breakpoint url="file://$PROJECT_DIR$/src/main/java/org/nbempire/android/tourguide/component/activity/MapActivity.java" line="324" class="org.nbempire.android.tourguide.component.activity.MapActivity" package="org.nbempire.android.tourguide.component.activity">
+      <breakpoint url="file://$PROJECT_DIR$/src/main/java/org/nbempire/android/tourguide/component/activity/MapActivity.java" line="336" class="org.nbempire.android.tourguide.component.activity.MapActivity" package="org.nbempire.android.tourguide.component.activity">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -84,7 +89,21 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/main/java/org/nbempire/android/tourguide/component/activity/MapActivity.java" line="417" class="org.nbempire.android.tourguide.component.activity.MapActivity$5" package="org.nbempire.android.tourguide.component.activity">
+      <breakpoint url="file://$PROJECT_DIR$/src/main/java/org/nbempire/android/tourguide/component/activity/MapActivity.java" line="429" class="org.nbempire.android.tourguide.component.activity.MapActivity$5" package="org.nbempire.android.tourguide.component.activity">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/src/main/java/org/nbempire/android/tourguide/component/activity/MapActivity.java" line="150" class="org.nbempire.android.tourguide.component.activity.MapActivity" package="org.nbempire.android.tourguide.component.activity">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -133,6 +152,7 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
+    <breakpoint_rules default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
@@ -146,9 +166,9 @@
       <file leaf-file-name="MapActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/nbempire/android/tourguide/component/activity/MapActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="435" column="47" selection-start="18082" selection-end="18082" vertical-scroll-proportion="0.11620294">
+            <state line="144" column="27" selection-start="5506" selection-end="5506" vertical-scroll-proportion="0.47954175">
               <folding>
-                <element signature="e#0#19439#0" expanded="true" />
+                <element signature="e#0#20172#0" expanded="true" />
                 <element signature="imports" expanded="true" />
                 <element signature="docComment;class#MapActivity#0" expanded="true" />
                 <element signature="docComment;field#MIN_TIME_FOR_LOCATION_UPDATES#0;class#MapActivity#0" expanded="true" />
@@ -163,7 +183,7 @@
                 <element signature="docComment;method#setUpMapIfNeeded#0;class#MapActivity#0" expanded="true" />
                 <element signature="docComment;method#setUpMap#0;class#MapActivity#0" expanded="true" />
                 <element signature="docComment;method#subscribeToLocationUpdates#0;class#MapActivity#0" expanded="true" />
-                <element signature="e#6936#6944#0" expanded="true" />
+                <element signature="e#7669#7677#0" expanded="true" />
                 <element signature="docComment;method#displayLastKnownLocation#0;class#MapActivity#0" expanded="true" />
                 <element signature="docComment;method#noLocationProvidersEnabled#0;class#MapActivity#0" expanded="true" />
                 <element signature="docComment;method#noLocationProvidersEnabled#1;class#MapActivity#0" expanded="true" />
@@ -174,6 +194,15 @@
                 <element signature="docComment;method#closeApp#0;class#MapActivity#0" expanded="true" />
                 <element signature="docComment;field#locationListener#0;class#MapActivity#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Instrumentation.class" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/../../android-sdk/platforms/android-16/android.jar!/android/app/Instrumentation.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="112" column="16" selection-start="5963" selection-end="5963" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -260,6 +289,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -518,21 +549,105 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tourGuide" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tourGuide" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tourGuide" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tourGuide" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="drawable-xhdpi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tourGuide" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tourGuide" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="drawable-mdpi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tourGuide" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tourGuide" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="drawable-ldpi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tourGuide" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tourGuide" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="drawable-hdpi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="project.structure.last.edited" value="Modules" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
-    <property name="OverrideImplement.combined" value="false" />
     <property name="project.structure.proportion" value="0.15" />
+    <property name="OverrideImplement.combined" value="false" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="ExportedApkPath" value="$USER_HOME$/Insync/barrios.nahuel@gmail.com/Temp/Tureame.apk" />
-    <property name="MemberChooser.sorted" value="false" />
     <property name="recentsLimit" value="5" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="ExportedApkPath" value="$USER_HOME$/Insync/barrios.nahuel@gmail.com/Temp/Tureame.apk" />
     <property name="ExportedModule" value="tourGuide" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../magicAnnotator" />
     <property name="GoToClass.includeJavaFiles" value="false" />
@@ -546,13 +661,13 @@
     <property name="options.lastSelected" value="copyright.profiles" />
     <property name="AndroidLayoutSelectedEditor" value="text-editor" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="016094481600B00E" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="emulator-5554" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="AndroidRunProguardForReleaseBuild" value="false" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers" value="false" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="options.searchVisible" value="true" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
@@ -629,19 +744,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -667,6 +769,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -877,10 +992,9 @@
     <frame x="49" y="24" width="1317" height="744" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.6923077" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="true" weight="0.6923077" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3276923" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4523077" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.32923076" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -899,6 +1013,7 @@
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32953683" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32953683" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3276923" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -982,50 +1097,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/nbempire/android/tourguide/service/PlaceService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="39" selection-start="484" selection-end="484" vertical-scroll-proportion="0.5109489">
-          <folding>
-            <element signature="docComment;class#PlaceService#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/nbempire/android/tourguide/dao/impl/PlaceDaoImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="5" selection-start="1361" selection-end="1361" vertical-scroll-proportion="0.23895253">
-          <folding>
-            <element signature="docComment;class#PlaceDaoImpl#0" expanded="true" />
-            <element signature="docComment;field#wikipediaService#0;class#PlaceDaoImpl#0" expanded="true" />
-            <element signature="docComment;method#transform#0;class#PlaceDaoImpl#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/nbempire/android/tourguide/dao/WikipediaDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="31" selection-start="422" selection-end="422" vertical-scroll-proportion="0.26442307">
-          <folding>
-            <element signature="docComment;class#WikipediaDao#0" expanded="true" />
-            <element signature="docComment;method#queryByGeosearch#0;class#WikipediaDao#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/org/nbempire/android/tourguide/service/WikipediaServiceTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="30" selection-start="983" selection-end="983" vertical-scroll-proportion="0.48076922">
-          <folding>
-            <element signature="docComment;class#WikipediaServiceTest#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="35" selection-start="210" selection-end="210" vertical-scroll-proportion="0.16826923" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/menu/activity_map.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="10" column="0" selection-start="296" selection-end="296" vertical-scroll-proportion="0.24038461" />
@@ -1111,11 +1182,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable-xhdpi/ic_launcher.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable-ldpi/ic_launcher.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable-hdpi/ic_launcher.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../../android-sdk/platforms/android-16/android.jar!/android/app/Instrumentation.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="112" column="16" selection-start="5963" selection-end="5963" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="41" selection-start="437" selection-end="437" vertical-scroll-proportion="-1.7675941">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/nbempire/android/tourguide/component/activity/MapActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="435" column="47" selection-start="18082" selection-end="18082" vertical-scroll-proportion="0.11620294">
+        <state line="144" column="27" selection-start="5506" selection-end="5506" vertical-scroll-proportion="0.47954175">
           <folding>
-            <element signature="e#0#19439#0" expanded="true" />
+            <element signature="e#0#20172#0" expanded="true" />
             <element signature="imports" expanded="true" />
             <element signature="docComment;class#MapActivity#0" expanded="true" />
             <element signature="docComment;field#MIN_TIME_FOR_LOCATION_UPDATES#0;class#MapActivity#0" expanded="true" />
@@ -1130,7 +1230,7 @@
             <element signature="docComment;method#setUpMapIfNeeded#0;class#MapActivity#0" expanded="true" />
             <element signature="docComment;method#setUpMap#0;class#MapActivity#0" expanded="true" />
             <element signature="docComment;method#subscribeToLocationUpdates#0;class#MapActivity#0" expanded="true" />
-            <element signature="e#6936#6944#0" expanded="true" />
+            <element signature="e#7669#7677#0" expanded="true" />
             <element signature="docComment;method#displayLastKnownLocation#0;class#MapActivity#0" expanded="true" />
             <element signature="docComment;method#noLocationProvidersEnabled#0;class#MapActivity#0" expanded="true" />
             <element signature="docComment;method#noLocationProvidersEnabled#1;class#MapActivity#0" expanded="true" />

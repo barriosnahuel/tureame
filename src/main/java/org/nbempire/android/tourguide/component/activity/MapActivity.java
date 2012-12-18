@@ -25,6 +25,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -109,9 +111,9 @@ public class MapActivity extends FragmentActivity {
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        setUpMapIfNeeded();
-
-        displayLastKnownLocation();
+        if (setUpMapIfNeeded()) {
+            displayLastKnownLocation();
+        }
     }
 
     @Override
@@ -119,9 +121,10 @@ public class MapActivity extends FragmentActivity {
         super.onResume();
 
         //  TODO : Performance : Should I leave only this call to the method? Review "Activities lifecycle" topic.
-        setUpMapIfNeeded();
-
-        Log.i(TAG, "Subscribed to location updates? " + subscribeToLocationUpdates());
+        if (setUpMapIfNeeded()) {
+            Log.i(TAG, "Subscribed to location updates? " + subscribeToLocationUpdates());
+        }
+        //  TODO : Functionality : Display something when Google Play Services is not available on current device.
     }
 
     /**
@@ -135,7 +138,9 @@ public class MapActivity extends FragmentActivity {
      * the Activity may not have been completely destroyed during this process (it is likely that it would only be stopped or paused), {@link
      * #onCreate(Bundle)} may not be called again so we should call this method in {@link #onResume()} to guarantee that it will be called.
      */
-    private void setUpMapIfNeeded() {
+    private boolean setUpMapIfNeeded() {
+        boolean success = true;
+
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
 
@@ -146,9 +151,16 @@ public class MapActivity extends FragmentActivity {
             if (mMap != null) {
                 setUpMap();
             } else {
-                closeApp("The application will be closed because of the device is unable to run without the Google Play Services API.");
+                success = false;
+                int isEnabled = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+                if (isEnabled != ConnectionResult.SUCCESS) {
+                    //  TODO : Functionality : Add onCancelListener after cancel Google Play Services AlertDialog.
+                    //closeApp("The application will be closed because of the device is unable to run without the Google Play Services API.");
+                    GooglePlayServicesUtil.getErrorDialog(isEnabled, this, 0);
+                }
             }
         }
+        return success;
     }
 
     /**
