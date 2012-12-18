@@ -11,4 +11,5 @@
     <string name="msg_location_providers_are_required">Either GPS or wireless networks are required to run this application, please enable at
         least one and enjoy the app.
     </string>
+    <string name="msg_there_isnt_places_to_display">Wow! There isn\'t any place around %1$skm near you… bad luck!</string>
 </resources>

@@ -48,4 +48,11 @@ public class WikipediaServiceImpl implements WikipediaService {
     public WikipediaPlace[] queryGeosearch(double latitude, double longitude) {
         return wikipediaDao.queryByGeosearch(latitude, longitude);
     }
+
+    @Override
+    public int getSearchRadiusInKm() {
+        //  TODO : Functionality : This value must be taken dinamically in the future.
+        //  TODO : Functionality : Let user configure units. Must add miles and may be another ones.
+        return 10;
+    }
 }

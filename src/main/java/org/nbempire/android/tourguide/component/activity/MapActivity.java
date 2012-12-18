@@ -331,7 +331,7 @@ public class MapActivity extends FragmentActivity {
                     LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
                     //  TODO : Functionality : Don't update places if they already exist.
-                    findPlacesNearBy(currentLocation);
+                    addMarkersOnPlacesNearBy(currentLocation);
 
                     updateLocationOnMap(currentLocation);
                 }
@@ -361,24 +361,31 @@ public class MapActivity extends FragmentActivity {
     }
 
     /**
-     * Find all places near the specified {@code currentLocation}.
+     * Find all places near the specified {@code currentLocation} and add it to the current map.
      *
      * @param currentLocation
      *         {@link LatLng} containing the current latitud-longitude pair.
      */
-    private void findPlacesNearBy(LatLng currentLocation) {
+    private void addMarkersOnPlacesNearBy(LatLng currentLocation) {
         List<Place> places = placeService.findAllNearBy(currentLocation.latitude, currentLocation.longitude);
         Log.d(TAG, "Found: " + places.size() + " places.");
 
-        //  TODO : Functionality : Do something when no places are found. May be user can choose to expand the search radius.
-        for (Place eachPlace : places) {
-            MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(eachPlace.getLatitude(),
-                                                                                         eachPlace.getLongitude())).title(eachPlace.getTitle()
-            ).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_wikipedia));
-            //  TODO : Functionality : Check about duplicating the marker onLocationChanged
-            mMap.addMarker(markerOptions);
+        if (places.isEmpty()) {
+            String message = String.format(String.valueOf(getText(R.string.msg_there_isnt_places_to_display)),
+                                                  wikipediaService.getSearchRadiusInKm());
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        } else {
+            for (Place eachPlace : places) {
+                MarkerOptions markerOptions = new MarkerOptions()
+                                                      .position(new LatLng(eachPlace.getLatitude(), eachPlace.getLongitude()))
+                                                      .title(eachPlace.getTitle())
+                                                      .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_wikipedia));
 
-            Log.d(TAG, eachPlace.toString());
+                //  TODO : Functionality : Check about duplicating the marker onLocationChanged
+                mMap.addMarker(markerOptions);
+
+                Log.d(TAG, eachPlace.toString());
+            }
         }
     }
 

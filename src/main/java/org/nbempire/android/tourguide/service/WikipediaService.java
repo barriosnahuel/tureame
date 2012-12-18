@@ -40,4 +40,11 @@ public interface WikipediaService {
      * @return An array of WikipediaPlace.
      */
     WikipediaPlace[] queryGeosearch(double latitude, double longitude);
+
+    /**
+     * Gets the current search radius in km.
+     *
+     * @return The current search radius in km. The value will be between 1 and 10 which is the maximum permitted by the API.
+     */
+    int getSearchRadiusInKm();
 }
