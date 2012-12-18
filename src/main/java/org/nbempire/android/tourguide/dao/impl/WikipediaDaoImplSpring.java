@@ -18,6 +18,7 @@ import org.nbempire.android.tourguide.domain.wikipedia.WikipediaPlace;
 import org.nbempire.android.tourguide.domain.wikipedia.WikipediaResponse;
 import org.nbempire.android.tourguide.util.wikipedia.WikipediaConstants;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -47,21 +48,26 @@ public class WikipediaDaoImplSpring implements WikipediaDao {
                                    "&gscoord=" + latitude + "%7C" + longitude +
                                    "&gsradius=" + WikipediaConstants.MAXIMUM_SEARCH_RADIUS +
                                    "&gslimit=10";
+
         URI url = null;
+        WikipediaPlace[] wikipediaPlaces = new WikipediaPlace[0];
         try {
             url = new URI(urlString);
+
+            WikipediaResponse response = restTemplate.getForObject(url, WikipediaResponse.class);
+
+            if (response != null && response.getQuery() != null) {
+                wikipediaPlaces = response.getQuery().getGeosearch();
+                Log.i(TAG, "Found: " + wikipediaPlaces.length + " wikipedia places for (lat, lon): (" + latitude + ", " + longitude + ").");
+            }
         } catch (URISyntaxException e) {
             // TODO : Log this exception or do something cool.
             Log.e(TAG, "There was an error creating the URI: " + urlString);
+
+        } catch (RestClientException restClientException) {
+            Log.e(TAG, "There was an error getting Wikipedia places from URL: " + url);
+            Log.e(TAG, restClientException.getMessage());
         }
-
-        //  TODO : Functionality : Catch errors here. (no converter, unknown host, etc)
-        WikipediaResponse response = restTemplate.getForObject(url, WikipediaResponse.class);
-
-        //  TODO : Functionality : Check for null (if the retrieved JSON has another format than my WikipediaResponse. E.g. getQuery() will
-        // return null if the radius is not between the valid values (10-10000)
-        WikipediaPlace[] wikipediaPlaces = response.getQuery().getGeosearch();
-        Log.i(TAG, "Found: " + wikipediaPlaces.length + " wikipedia places for (lat, lon): (" + latitude + ", " + longitude + ").");
 
         return wikipediaPlaces;
     }
