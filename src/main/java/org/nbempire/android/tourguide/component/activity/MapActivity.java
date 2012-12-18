@@ -106,6 +106,8 @@ public class MapActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        //  TODO : Functionality : Add Google Analytics tracker.
+
         wikipediaService = new WikipediaServiceImpl(new WikipediaDaoImplSpring());
         placeService = new PlaceServiceImpl(new PlaceDaoImpl(wikipediaService));
 
