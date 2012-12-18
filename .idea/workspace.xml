@@ -30,16 +30,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ff337b5-bdaf-4133-b1cb-61ef8f567042" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/ic_launcher.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-ldpi/ic_launcher.png" afterPath="$PROJECT_DIR$/res/drawable-ldpi/ic_launcher.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-mdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/res/drawable-mdpi/ic_launcher.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/ic_launcher.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/nbempire/android/tourguide/component/activity/MapActivity.java" afterPath="$PROJECT_DIR$/src/main/java/org/nbempire/android/tourguide/component/activity/MapActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="tourGuide.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="5ff337b5-bdaf-4133-b1cb-61ef8f567042" time="1355848415534" ignored="false" />
+    <file path="/Dummy.txt" changelist="5ff337b5-bdaf-4133-b1cb-61ef8f567042" time="1355852131044" ignored="false" />
     <file path="/fragment.java" changelist="5ff337b5-bdaf-4133-b1cb-61ef8f567042" time="1355850647673" ignored="false" />
     <file path="/strings.xml" changelist="5ff337b5-bdaf-4133-b1cb-61ef8f567042" time="1355764698299" ignored="false" />
     <file path="/MapActivity.java" changelist="5ff337b5-bdaf-4133-b1cb-61ef8f567042" time="1355851826803" ignored="false" />
@@ -965,7 +960,11 @@
       <created>1355802345403</created>
       <updated>1355802345403</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Add dialog to enable user install Google Play Services API. Change launcher icon to the new one with a big and white T.">
+      <created>1355852133037</created>
+      <updated>1355852133037</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1056,7 +1055,7 @@
     <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Create the LocationListener only once by setting it as a type attribute. Clear the map before adding new markers. Update minTime and &#10;minDistance for receive location updates." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add dialog to enable user install Google Play Services API. Change launcher icon to the new one with a big and white T." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1088,6 +1087,7 @@
     <MESSAGE value="Display a message to the users if there isn't any place to show to them." />
     <MESSAGE value="Catch RestClientException to prevent showing an error to the user when having an IllegalArgumentException in Spring." />
     <MESSAGE value="Create the LocationListener only once by setting it as a type attribute. Clear the map before adding new markers. Update minTime and &#10;minDistance for receive location updates." />
+    <MESSAGE value="Add dialog to enable user install Google Play Services API. Change launcher icon to the new one with a big and white T." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
