@@ -9,7 +9,7 @@
     android:versionName="1.0">
 
     <uses-sdk android:minSdkVersion="8"
-        android:targetSdkVersion="16" />
+              android:targetSdkVersion="19" />
 
     <!--This permissions are for the Google Maps Android API V2-->
     <permission android:name="org.nbempire.android.tourguide.permission.MAPS_RECEIVE"
