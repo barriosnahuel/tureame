@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright (c) 2012-2013 Nahuel Barrios <barrios.nahuel@gmail.com>.
+  ~ No se reconocerá ningún tipo de garantía.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/activity_map_legal_notices_menu_item"
+        android:title="@string/legal_notices" />
+
+</menu>

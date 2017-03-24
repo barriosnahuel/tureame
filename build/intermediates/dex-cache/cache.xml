@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="/Users/nbarrios/.android/build-cache/6ed0714d421bfaf6780d824d5d31f82548251d06/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="518768f3200963fbfec652f498da2c9d39245234">
+        <dex dex="/Users/nbarrios/Coding/workspace-mine/tureame/app/build/intermediates/pre-dexed/debug/classes_3df1ddfca369ba56dc75a5bed0fe7d2ba873b94b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nbarrios/.android/build-cache/394a981018733a82aa4802e9afcffb00ba33a958/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="4b746ef0fd46acb5aaf3d9ab9a4cec22c28d3211">
+        <dex dex="/Users/nbarrios/Coding/workspace-mine/tureame/app/build/intermediates/pre-dexed/debug/classes_82dc229bc91f25349dff83a9d9c46a97c1967287.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nbarrios/.android/build-cache/48c375990bff85b59f675972a3e55a3744b05053/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="19696dc358ac668e341f28c41e3387d61ccdb81d">
+        <dex dex="/Users/nbarrios/Coding/workspace-mine/tureame/app/build/intermediates/pre-dexed/debug/classes_33c0e9992c4c2f29d88dd17eebb27f45fbc4bbc0.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nbarrios/.android/build-cache/8e984a9e4394b538b08de4d09ecaeaf1ea7078ab/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="bdcc2a9572f18b8c90a3a157cab6cdfc97c6c736">
+        <dex dex="/Users/nbarrios/Coding/workspace-mine/tureame/app/build/intermediates/pre-dexed/debug/classes_023867627915cbfeddcb2a98472915c3e03e41f7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nbarrios/.android/build-cache/166ac55430ec408252b1bf5edf5643047c44fcdf/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c7626a9aa507bbbdc16188bc9a9f9bf3370c1ddd">
+        <dex dex="/Users/nbarrios/Coding/workspace-mine/tureame/app/build/intermediates/pre-dexed/debug/classes_025cee74f5db5eae8d2c9522919eae7ac2bede11.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nbarrios/.android/build-cache/26b4916fcf45f6359e5354b2912de1dbb5e90ee7/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="93c1199fcb0a34b980e6fff8350daff62e696ec2">
+        <dex dex="/Users/nbarrios/Coding/workspace-mine/tureame/app/build/intermediates/pre-dexed/debug/classes_a7e5ba6f871fa9bcabaa767794e20529a6699ce1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nbarrios/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.2/1f96456ca233dec780aa224bff076d8e8bca3908/gson-2.2.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="1f96456ca233dec780aa224bff076d8e8bca3908">
+        <dex dex="/Users/nbarrios/Coding/workspace-mine/tureame/app/build/intermediates/pre-dexed/debug/gson-2.2.2_5206d159658462bcd0ff8aeceac542b931e3089e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nbarrios/.android/build-cache/168f30b56c4e7b7610950e9806bbc87b5053f9eb/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="70f23cb87278f89aa51e6f57e8f0fd5266572d95">
+        <dex dex="/Users/nbarrios/Coding/workspace-mine/tureame/app/build/intermediates/pre-dexed/debug/classes_22a92bc0fbf14bc4355c30ee70aa84c72d593733.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nbarrios/.android/build-cache/837f8d7c3e7045e8f2c924f93d06996621374500/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/Users/nbarrios/Coding/workspace-mine/tureame/app/build/intermediates/pre-dexed/debug/classes_e85b0baf9923c2dd0de54280f9b6a315e4a6ec42.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nbarrios/.android/build-cache/7b3cb9c94331d54eae2be8f6ba61cb98bce7157a/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="6003d64df88a6ce5e961fa2bad7f1b9b97689ac1">
+        <dex dex="/Users/nbarrios/Coding/workspace-mine/tureame/app/build/intermediates/pre-dexed/debug/classes_97e192aa183c2fa388540fdb463632bfac258059.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nbarrios/Coding/xDKs/android-sdk/extras/android/m2repository/com/android/support/support-annotations/25.3.0/support-annotations-25.3.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="dd84903d2e1af25a6081ef9038ad863cb14ca3a0">
+        <dex dex="/Users/nbarrios/Coding/workspace-mine/tureame/app/build/intermediates/pre-dexed/debug/support-annotations-25.3.0_d30191987f42d25ac0ca8ba6b163a929f977e801.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nbarrios/.gradle/caches/modules-2/files-2.1/org.springframework.android/spring-android-core/1.0.1.RELEASE/e68f0e8e4b636ee30c4de58953be38d9b72a5e3b/spring-android-core-1.0.1.RELEASE.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e68f0e8e4b636ee30c4de58953be38d9b72a5e3b">
+        <dex dex="/Users/nbarrios/Coding/workspace-mine/tureame/app/build/intermediates/pre-dexed/debug/spring-android-core-1.0.1.RELEASE_35487519befc505e4b3c7adedbcd39a656c27dff.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nbarrios/.android/build-cache/08ac6cbe70c8fae0764b8d1ca02e7e62a65f3b3a/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="93c10d68ab5ea070f15782ae6d3a28d1f1d8f45e">
+        <dex dex="/Users/nbarrios/Coding/workspace-mine/tureame/app/build/intermediates/pre-dexed/debug/classes_49dc48d2cd0e7e303596babb4f09906877a20c37.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nbarrios/.gradle/caches/modules-2/files-2.1/org.springframework.android/spring-android-rest-template/1.0.1.RELEASE/e132d929bd181941f79b0d63edafb8a86ae6fd33/spring-android-rest-template-1.0.1.RELEASE.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e132d929bd181941f79b0d63edafb8a86ae6fd33">
+        <dex dex="/Users/nbarrios/Coding/workspace-mine/tureame/app/build/intermediates/pre-dexed/debug/spring-android-rest-template-1.0.1.RELEASE_29171410759c246604ec5393ded0d0411778c74b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nbarrios/.android/build-cache/8df04938c440f617f5af94c021dbecc85f0821c4/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="5cc5ef8347a6bafa14556cbd35230aa9b3431bb0">
+        <dex dex="/Users/nbarrios/Coding/workspace-mine/tureame/app/build/intermediates/pre-dexed/debug/classes_eb41c6eb5ad7252e3bbbf8d8ffe73967d15311b3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nbarrios/.gradle/caches/modules-2/files-2.1/com.google.android/support-v4/r7/24d0f6da34c3a2bfcf736ab42d51c91ac821ee22/support-v4-r7.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="24d0f6da34c3a2bfcf736ab42d51c91ac821ee22">
+        <dex dex="/Users/nbarrios/Coding/workspace-mine/tureame/app/build/intermediates/pre-dexed/debug/support-v4-r7_7ce908748bbc7aa293579d0441251729298223d1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nbarrios/.android/build-cache/c020fc5c7d7c1a064d94a852601c50a94ad6c2a5/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d6a04527c17597019dad82777c5094a3d60d1c33">
+        <dex dex="/Users/nbarrios/Coding/workspace-mine/tureame/app/build/intermediates/pre-dexed/debug/classes_80e00872314b1cc7e7f614bf8f5b2f6756178a73.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nbarrios/.android/build-cache/eb255c2cbfeeb90a9a80b8068c22c4a08b9c59f7/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="425c7b17887e5c3f8cbdf67ba171bc246f29b42c">
+        <dex dex="/Users/nbarrios/Coding/workspace-mine/tureame/app/build/intermediates/pre-dexed/debug/classes_2939dee43f9a12f891e2343e6d1ca06c15cd6880.jar" />
+    </item>
+
+</items>

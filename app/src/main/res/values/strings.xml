@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2012-2013 Nahuel Barrios <barrios.nahuel@gmail.com>.
+  ~ No se reconocerá ningún tipo de garantía.
+  -->
+
+<resources>
+
+    <string name="app_name">Tureame</string>
+    <string name="no">No</string>
+    <string name="enable">Enable</string>
+    <string name="no_close_app">No, close app!</string>
+    <string name="legal_notices">Legal notices</string>
+    <string name="findNearPlaces">Find places near me</string>
+
+</resources>
